@@ -1,62 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Environmental Info - IQAir Widgets (°F)</title>
+  <meta charset="UTF-8">
+  <title>Environmental Info - Matt's Taiwan Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: black;
       color: #39ff14;
       font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
-      margin: 40px;
+      margin: 0;
+      line-height: 1.6;
+      padding: 20px;
     }
+
+    header {
+      background-color: #111;
+      padding: 10px 20px;
+      border-bottom: 1px solid #39ff14;
+    }
+
+    nav a {
+      color: #39ff14;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
     h1, h2 {
       border-bottom: 1px solid #39ff14;
       padding-bottom: 0.2em;
-      margin-bottom: 30px;
+      margin-top: 40px;
     }
-    .widget-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px; /* tighter spacing between widgets */
-      align-items: center;
+
+    a {
+      color: #39ff14;
+      text-decoration: underline;
     }
-    .widget-container > div {
-      width: 600px;
-      height: 450px;
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
     }
-    .map-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 60px;
-    }
-    .map-container iframe {
-      width: 100%;
-      max-width: 900px;
-      height: 600px;
-      border: none;
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Real-Time Environmental Data: Taipei & Portland (°F)</h1>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="environmental-info.html">Environmental Info</a>
+      <a href="connect.html">Connect</a>
+    </nav>
+  </header>
 
-  <div class="widget-container">
-    <!-- Taipei widget with Fahrenheit -->
-    <div name="airvisual_widget" key="6833454f4f2d493b21824ed3" unit="f"></div>
+  <div class="content">
+    <h1>Environmental Info</h1>
 
-    <!-- Portland widget with Fahrenheit -->
-    <div name="airvisual_widget" key="683345d00c48dace4f294d33" unit="f"></div>
+    <p>
+      This page compares real-time environmental data from Taipei and Portland. 
+      You can explore air quality, temperature, humidity, and other key indicators using external APIs and visual tools.
+    </p>
+
+    <p>
+      (Placeholder for graphs, maps, or embedded widgets. Let me know when you're ready to add charts or live data feeds and I can help!)
+    </p>
+
+    <h2>Resources</h2>
+    <ul>
+      <li><a href="https://airtw.epa.gov.tw" target="_blank">Taiwan EPA Air Quality Data</a></li>
+      <li><a href="https://www.airnow.gov" target="_blank">U.S. AirNow Data for Portland</a></li>
+    </ul>
   </div>
-
-  <div class="map-container">
-    <h2>Public Restrooms in Taipei</h2>
-    <iframe src="https://www.google.com/maps/d/u/1/embed?mid=1odmF4C4N9sFOAX6mhPUYuy-wZ54QcEI&ehbc=2E312F" loading="lazy"></iframe>
-  </div>
-
-  <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
 
 </body>
 </html>
