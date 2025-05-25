@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Environmental Info</title>
+  <meta charset="UTF-8" />
+  <title>Environmental Info - IQAir Widgets</title>
   <style>
     body {
       background-color: black;
@@ -16,15 +16,13 @@
     }
     .widget-container {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: center;
+      gap: 40px;
       margin-top: 40px;
     }
-    iframe {
-      border: none;
-      width: 500px;
-      height: 300px;
-      margin: 20px;
+    .widget-container > div {
+      width: 400px; /* Adjust width if needed */
+      height: 300px; /* Adjust height if needed */
     }
   </style>
 </head>
@@ -33,13 +31,14 @@
   <h1>Real-Time Air Quality: Taipei & Portland</h1>
 
   <div class="widget-container">
-    <!-- Taipei AQI Widget -->
-    <iframe src="https://widget.waqi.info/widget/?token=d3d0b5e1909c9452e95ca52a5b347c205254d8bd&city=@taipei"></iframe>
+    <!-- Taipei widget -->
+    <div name="airvisual_widget" key="6833454f4f2d493b21824ed3"></div>
 
-    <!-- Portland AQI Widget -->
-    <iframe src="https://widget.waqi.info/widget/?token=d3d0b5e1909c9452e95ca52a5b347c205254d8bd&city=@portland"></iframe>
+    <!-- Portland widget -->
+    <div name="airvisual_widget" key="683345d00c48dace4f294d33"></div>
   </div>
+
+  <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
 
 </body>
 </html>
-
