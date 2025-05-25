@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Environmental Info - Matt's Taiwan Project</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -10,8 +10,8 @@
       color: #39ff14;
       font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
       margin: 0;
-      line-height: 1.6;
       padding: 20px;
+      line-height: 1.6;
     }
 
     header {
@@ -42,18 +42,30 @@
       text-decoration: underline;
     }
 
-    .content {
-      max-width: 800px;
+    .widget-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px; /* reduced vertical space */
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .widget-container > div {
+      width: 600px;
+      height: 450px;
+    }
+
+    iframe {
+      border: none;
+      display: block;
       margin: 0 auto;
     }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      nav a {
-        display: block;
-        margin: 10px 0;
+    @media (max-width: 640px) {
+      .widget-container > div,
+      iframe {
+        width: 100%;
+        height: 400px;
       }
     }
   </style>
@@ -68,24 +80,18 @@
     </nav>
   </header>
 
-  <div class="content">
-    <h1>Environmental Info</h1>
+  <h1>Real-Time Air Quality: Taipei & Portland (°F)</h1>
 
-    <p>
-      This page compares real-time environmental data from Taipei and Portland. 
-      You can explore air quality, temperature, humidity, and other key indicators using external APIs and visual tools.
-    </p>
-
-    <p>
-      (Placeholder for graphs, maps, or embedded widgets. Let me know when you're ready to add charts or live data feeds and I can help!)
-    </p>
-
-    <h2>Resources</h2>
-    <ul>
-      <li><a href="https://airtw.epa.gov.tw" target="_blank">Taiwan EPA Air Quality Data</a></li>
-      <li><a href="https://www.airnow.gov" target="_blank">U.S. AirNow Data for Portland</a></li>
-    </ul>
+  <div class="widget-container">
+    <div name="airvisual_widget" key="6833454f4f2d493b21824ed3" unit="f"></div>
+    <div name="airvisual_widget" key="683345d00c48dace4f294d33" unit="f"></div>
   </div>
+
+  <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
+
+  <h2>Public Restrooms in Taipei</h2>
+
+  <iframe src="https://www.google.com/maps/d/u/1/embed?mid=1odmF4C4N9sFOAX6mhPUYuy-wZ54QcEI&ehbc=2E312F" width="640" height="480"></iframe>
 
 </body>
 </html>
