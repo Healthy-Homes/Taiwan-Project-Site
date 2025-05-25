@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environmental Information</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .widget-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .widget-box {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      flex: 1 1 400px; /* Responsive: shrink and grow but start at 400px */
+      max-width: 600px;
+    }
+
+    .widget-title {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Environmental Information: Taipei vs. Portland</h1>
+
+  <div class="widget-container">
+    <div class="widget-box">
+      <div class="widget-title">Taipei</div>
+      <script type="text/javascript" src="https://widgets.waqi.info/jswgt/?size=xl&city=taiwan%2Ftaipei"></script>
+    </div>
+
+    <div class="widget-box">
+      <div class="widget-title">Portland</div>
+      <script type="text/javascript" src="https://widgets.waqi.info/jswgt/?size=xl&city=usa%2Fportland"></script>
+    </div>
+  </div>
+
+</body>
+</html>
