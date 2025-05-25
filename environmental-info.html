@@ -1,59 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Environmental Information</title>
+  <meta charset="UTF-8">
+  <title>Environmental Info</title>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 2rem;
-      background-color: #f5f5f5;
+      background-color: black;
+      color: #39ff14;
+      font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      margin: 40px;
     }
-
     h1 {
-      text-align: center;
-      margin-bottom: 2rem;
+      border-bottom: 1px solid #39ff14;
+      padding-bottom: 0.2em;
     }
-
     .widget-container {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
+      justify-content: space-around;
+      margin-top: 40px;
     }
-
-    .widget-box {
-      background-color: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      flex: 1 1 400px; /* Responsive: shrink and grow but start at 400px */
-      max-width: 600px;
-    }
-
-    .widget-title {
-      text-align: center;
-      margin-bottom: 1rem;
-      font-weight: bold;
+    iframe {
+      border: none;
+      width: 500px;
+      height: 300px;
+      margin: 20px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Environmental Information: Taipei vs. Portland</h1>
+  <h1>Real-Time Air Quality: Taipei & Portland</h1>
 
   <div class="widget-container">
-    <div class="widget-box">
-      <div class="widget-title">Taipei</div>
-      <script type="text/javascript" src="https://widgets.waqi.info/jswgt/?size=xl&city=taiwan%2Ftaipei"></script>
-    </div>
+    <!-- Taipei AQI Widget -->
+    <iframe src="https://widget.waqi.info/widget/?token=d3d0b5e1909c9452e95ca52a5b347c205254d8bd&city=@taipei"></iframe>
 
-    <div class="widget-box">
-      <div class="widget-title">Portland</div>
-      <script type="text/javascript" src="https://widgets.waqi.info/jswgt/?size=xl&city=usa%2Fportland"></script>
-    </div>
+    <!-- Portland AQI Widget -->
+    <iframe src="https://widget.waqi.info/widget/?token=d3d0b5e1909c9452e95ca52a5b347c205254d8bd&city=@portland"></iframe>
   </div>
 
 </body>
 </html>
+
