@@ -3,29 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>Connect - Matt's Taiwan Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: black;
       color: #39ff14;
       font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
-      margin: 40px;
+      margin: 0;
       line-height: 1.6;
+      padding: 20px;
+      text-align: center;
     }
-    a {
+
+    header {
+      background-color: #111;
+      padding: 10px 20px;
+      border-bottom: 1px solid #39ff14;
+      text-align: left;
+    }
+
+    nav a {
       color: #39ff14;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
       text-decoration: underline;
     }
+
     h1 {
       border-bottom: 1px solid #39ff14;
       padding-bottom: 0.2em;
-      margin-bottom: 30px;
+      margin-top: 40px;
     }
-    .connect-section {
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-    }
-    .connect-section a.button-link {
+
+    a.button-link {
       display: inline-block;
       margin-top: 20px;
       color: black;
@@ -36,25 +50,43 @@
       font-weight: bold;
       transition: background-color 0.3s;
     }
-    .connect-section a.button-link:hover {
+
+    a.button-link:hover {
       background-color: #2ddf10;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
 <body>
 
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="environmental-info.html">Environmental Info</a>
+      <a href="connect.html">Connect</a>
+    </nav>
+  </header>
+
   <h1>Connect</h1>
 
-  <div class="connect-section">
-    <p>
-      I’d love to hear from you! If you'd like to share your thoughts or participate in my research, please fill out the short survey below.
-    </p>
-    <a class="button-link" href="https://qualtricsxmpv7qmxsvh.qualtrics.com/jfe/form/SV_39tR3pCuNvZ35qe" target="_blank">Take the Survey</a>
+  <p>
+    I’d love to hear from you! If you'd like to share your thoughts or participate in my research, please fill out the short survey below.
+  </p>
 
-    <p style="margin-top: 40px;">
-      Or connect with me on <a href="https://www.linkedin.com/in/matthew-ulsh-mph-20b6b1b3/" target="_blank">LinkedIn</a>.
-    </p>
-  </div>
+  <a class="button-link" href="https://qualtricsxmpv7qmxsvh.qualtrics.com/jfe/form/SV_39tR3pCuNvZ35qe" target="_blank">Take the Survey</a>
+
+  <p style="margin-top: 40px;">
+    Or connect with me on <a href="https://www.linkedin.com/in/matthew-ulsh-mph-20b6b1b3/" target="_blank">LinkedIn</a>.
+  </p>
 
 </body>
 </html>
