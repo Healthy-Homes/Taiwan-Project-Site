@@ -42,6 +42,12 @@
       justify-content: center;
       text-align: center;
     }
+    /* This style ensures your image fits within the photo-space */
+    .photo-space img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain; /* or 'cover' depending on how you want the image to fill the space */
+    }
     .section {
       margin-bottom: 60px;
     }
@@ -67,7 +73,7 @@
       field notes, and reflections from my time in Taiwan.
     </p>
     <div class="photo-space">
-      [ Future Photo Goes Here ]
+      <img src="https://raw.githubusercontent.com/Healthy-Homes/Taiwan-Project-Site/a603a0d28e589051e40f27e44e226e05cd29fa87/tito.jpeg" alt="A photo of Tito, a dog.">
     </div>
   </div>
 
