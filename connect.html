@@ -10,16 +10,14 @@
       color: #39ff14;
       font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
       margin: 0;
-      line-height: 1.6;
       padding: 20px;
-      text-align: center;
+      line-height: 1.6;
     }
 
     header {
       background-color: #111;
       padding: 10px 20px;
       border-bottom: 1px solid #39ff14;
-      text-align: left;
     }
 
     nav a {
@@ -33,32 +31,23 @@
       text-decoration: underline;
     }
 
-    h1 {
+    h1, h2 {
       border-bottom: 1px solid #39ff14;
       padding-bottom: 0.2em;
       margin-top: 40px;
     }
 
-    a.button-link {
-      display: inline-block;
-      margin-top: 20px;
-      color: black;
-      background-color: #39ff14;
-      padding: 12px 20px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s;
+    a {
+      color: #39ff14;
+      text-decoration: underline;
     }
 
-    a.button-link:hover {
-      background-color: #2ddf10;
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
       nav a {
         display: block;
         margin: 10px 0;
@@ -76,17 +65,25 @@
     </nav>
   </header>
 
-  <h1>Connect</h1>
+  <div class="content">
+    <h1>Connect</h1>
 
-  <p>
-    I’d love to hear from you! If you'd like to share your thoughts or participate in my research, please fill out the short survey below.
-  </p>
+    <p>I'd love to hear from you. If you have feedback, ideas, or stories to share, please fill out the anonymous survey below:</p>
 
-  <a class="button-link" href="https://qualtricsxmpv7qmxsvh.qualtrics.com/jfe/form/SV_39tR3pCuNvZ35qe" target="_blank">Take the Survey</a>
+    <p>
+      <a href="https://qualtricsxmpv7qmxsvh.qualtrics.com/jfe/form/SV_39tR3pCuNvZ35qe" target="_blank">
+        Open the Qualtrics Survey
+      </a>
+    </p>
 
-  <p style="margin-top: 40px;">
-    Or connect with me on <a href="https://www.linkedin.com/in/matthew-ulsh-mph-20b6b1b3/" target="_blank">LinkedIn</a>.
-  </p>
+    <p>You can also connect with me on LinkedIn:</p>
+
+    <p>
+      <a href="https://www.linkedin.com/in/matthew-ulsh-mph-20b6b1b3/" target="_blank">
+        LinkedIn - Matthew Ulsh, MPH
+      </a>
+    </p>
+  </div>
 
 </body>
 </html>
