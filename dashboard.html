@@ -44,8 +44,10 @@
         // Replace with your actual Google Maps API key
         const Maps_API_KEY = 'AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk'; 
 
-        // Your Google Sheet CSV URL (ensure it's publicly accessible)
-const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO09oNSg-L/pub?gid=0&single=true&output=csv';
+        // Your Google Sheet CSV URL (ensure it's publicly accessible and for the correct tab)
+        // This URL must point to your 'Map Data' tab after you've published it to web as CSV.
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO09oNSg-L/pub?gid=0&single=true&output=csv';
+
         let map; // Declare map variable
 
         // --- Photo Feature Placeholder (Currently Disabled) ---
@@ -89,7 +91,7 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT
                     return [];
                 }
 
-                // Handle headers robustly, remove potential quotes and extra spaces
+                // Headers are now 10, based on your TextEdit output
                 const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
 
                 const data = [];
@@ -101,6 +103,7 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT
                     // Robust regex to split CSV by commas, handling quoted fields correctly
                     const values = currentRow.match(/(?:[^,"]+|"(?:[^"]|"")*")+/g);
 
+                    // THIS IS THE CRITICAL CHECK: headers.length will now be 10, matching your CSV
                     if (!values || values.length !== headers.length) {
                         console.warn(`Skipping malformed row ${i}: "${currentRow}" - Expected ${headers.length} columns, got ${values ? values.length : 0}`);
                         continue;
@@ -145,21 +148,30 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT
             // Loop through each meal entry to create markers
             meals.forEach(meal => {
                 // Ensure column names exactly match your CSV headers (case-sensitive)
+                const timestamp = meal['Timestamp']; // New: Extract Timestamp
                 const restaurantName = meal['Restaurant Name'];
+                const dateOfMeal = meal['Date of Meal']; // Corrected: This is in your CSV!
                 const mealName = meal['Meal Name/ Dish'];
-                const photoUrl = meal['Upload a photo of the meal.']; // Still extracted, but not used below
-                const latitude = parseFloat(meal['Location- Latitude']); // Corrected column name match
-                const longitude = parseFloat(meal['Location- Longitude']); // Corrected column name match
+                // REMOVED: photoUrl, as it's not in your 10-column CSV
+                const latitude = parseFloat(meal['Location- Latitude']); 
+                const longitude = parseFloat(meal['Location- Longitude']); 
                 const rating = meal['Overall Rating'];
-                const review = meal['Notes'];
-                const dateOfMeal = meal['Date of Meal'];
-                const tastiness = meal['Tastiness']; // New: Extract Tastiness
-                const ambianceService = meal['Ambiance/ Service']; // New: Extract Ambiance/ Service
+                const tastiness = meal['Tastiness']; 
+                const ambianceService = meal['Ambiance/ Service']; 
+                const notes = meal['Notes']; // Renamed to 'notes' for clarity
+
+
+                // For debugging: Log the extracted data for each meal
+                console.log("Processing Meal:", {
+                    timestamp, restaurantName, dateOfMeal, mealName, latitude, longitude,
+                    rating, tastiness, ambianceService, notes
+                });
+
 
                 // Skip entries with invalid (non-numeric) coordinates
                 if (isNaN(latitude) || isNaN(longitude)) {
                     console.warn(`Skipping invalid location for: ${restaurantName || 'Unknown'} - ${mealName || 'Unknown'} (Lat: "${meal['Location- Latitude']}", Lng: "${meal['Location- Longitude']}")`);
-                    return;
+                    return; // Skip this iteration if lat/lng are invalid
                 }
 
                 const position = { lat: latitude, lng: longitude };
@@ -171,8 +183,6 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT
                     title: `${restaurantName} - ${mealName}` // Title for accessibility/hover
                 });
 
-                // const embeddablePhotoUrl = convertDriveUrlForImage(photoUrl); // This line is commented out as photos are disabled
-
                 // Construct InfoWindow content using template literals
                 const infoWindowContent = `
                     <div class="info-content">
@@ -180,7 +190,7 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT
                         <p>Rating: ${rating === '' || rating === undefined ? 'N/A' : rating}/5 stars</p>
                         ${tastiness ? `<p>Tastiness: ${tastiness}</p>` : ''}
                         ${ambianceService ? `<p>Ambiance/Service: ${ambianceService}</p>` : ''}
-                        ${review ? `<p>Review: ${review}</p>` : ''}
+                        ${notes ? `<p>Notes: ${notes}</p>` : ''}
                         ${dateOfMeal ? `<p>Date: ${dateOfMeal}</p>` : ''}
                         </div>`;
 
