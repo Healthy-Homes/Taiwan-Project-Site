@@ -37,26 +37,17 @@
     <div id="map"></div>
 
     <script>
-        // Load PapaParse CSV parser from CDN
-        function loadPapaParse() {
-            return new Promise((resolve) => {
-                const script = document.createElement('script');
-                script.src = "https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js";
-                script.onload = () => resolve();
-                document.head.appendChild(script);
-            });
-        }
-
-        const Maps_API_KEY = 'AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk';  // Your new restricted API key
+        const Maps_API_KEY = 'AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk';
         const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO59oNSg-L/pub?gid=683707284&single=true&output=csv';
 
         let map;
 
         function convertDriveUrlForImage(url) {
             if (!url) return '';
-            // Try to parse Google Drive URLs in different formats
-            let match = url.match(/\/d\/([a-zA-Z0-9_-]+)\/view/);
+            // Google Drive share links have two common formats; handle both
+            let match = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
             if (!match) {
+                // Alternative format: open?id=FILEID
                 match = url.match(/open\?id=([a-zA-Z0-9_-]+)/);
             }
             if (match && match[1]) {
@@ -68,31 +59,36 @@
         async function fetchCsvData(url) {
             const response = await fetch(url);
             const text = await response.text();
-            return new Promise((resolve, reject) => {
-                Papa.parse(text, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        resolve(results.data);
-                    },
-                    error: function(err) {
-                        reject(err);
-                    }
-                });
-            });
+
+            const rows = text.trim().split('\n');
+            const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
+
+            const data = [];
+
+            for (let i = 1; i < rows.length; i++) {
+                // Split row respecting commas inside quotes
+                let values = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                if (!values || values.length !== headers.length) {
+                    // If columns don't match, skip this row
+                    continue;
+                }
+                // Clean quotes from values
+                values = values.map(v => v.replace(/^"|"$/g, '').trim());
+                let row = {};
+                headers.forEach((h, j) => row[h] = values[j]);
+                data.push(row);
+            }
+            return data;
         }
 
         async function initMap() {
-            // Load PapaParse first
-            await loadPapaParse();
-
             const { Map } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const { InfoWindow } = await google.maps.importLibrary("maps");
 
             map = new Map(document.getElementById("map"), {
-                center: { lat: 25.0330, lng: 121.5654 },
-                zoom: 12,
+                center: { lat: 25.0330, lng: 121.5654 }, // Taipei center
+                zoom: 6, // Zoomed out so you can see your Oregon marker too
             });
 
             const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
@@ -106,7 +102,7 @@
                 const longitude = parseFloat(meal['Location- Longitude']);
                 const rating = meal['Overall Rating'];
                 const review = meal['Notes'];
-                const dateTimeVisited = meal['Date of Meal'];
+                // Date of Meal is there if you want to use: meal['Date of Meal']
 
                 if (isNaN(latitude) || isNaN(longitude)) {
                     console.warn(`Skipping invalid location: ${restaurantName} - ${mealName}`);
@@ -124,33 +120,26 @@
                 const infoWindowContent = `
                     <div class="info-content">
                         <h3>${restaurantName} - ${mealName}</h3>
-                        <p>Date: ${dateTimeVisited || 'N/A'}</p>
-                        <p>Rating: ${rating || 'N/A'}/5</p>
-                        <p>Notes: ${review || 'N/A'}</p>
+                        <p>Rating: ${rating || 'N/A'}/5 stars</p>
+                        <p>${review || ''}</p>
                         ${embeddablePhotoUrl ? `<img src="${embeddablePhotoUrl}" alt="${mealName} photo">` : ''}
-                    </div>
-                `;
+                    </div>`;
 
                 marker.addListener('click', () => {
                     infoWindow.setContent(infoWindowContent);
-                    infoWindow.open(map, marker);
+                    infoWindow.open({
+                        anchor: marker,
+                        map,
+                    });
                 });
             });
         }
 
-        // Load Google Maps script and initialize map
-        function loadGoogleMaps() {
-            return new Promise((resolve) => {
-                window.initMap = () => resolve();
-                const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${Maps_API_KEY}&callback=initMap&libraries=marker`;
-                script.async = true;
-                document.head.appendChild(script);
-            });
-        }
+        window.initMap = initMap;
+    </script>
 
-        // Start everything
-        loadGoogleMaps();
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk&callback=initMap&v=beta&libraries=marker">
     </script>
 </body>
 </html>
