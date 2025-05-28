@@ -38,7 +38,7 @@
 
     <script>
         const Maps_API_KEY = 'AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk';
-const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/.../pub?output=csv';
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO59oNSg-L/pub?gid=683707284&single=true&output=csv';
 
         let map;
 
@@ -76,7 +76,7 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/.../pub?o
             map = new Map(document.getElementById("map"), {
                 center: { lat: 25.0330, lng: 121.5654 },
                 zoom: 12,
-                mapId: "YOUR_MAP_ID",
+                // mapId removed since none specified
             });
 
             const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
@@ -109,20 +109,4 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/.../pub?o
                     <div class="info-content">
                         <h3>${restaurantName} - ${mealName}</h3>
                         <p>Rating: ${rating || 'N/A'}/5 stars</p>
-                        ${embeddablePhotoUrl ? `<img src="${embeddablePhotoUrl}" alt="${mealName} photo">` : ''}
-                        <p>${review || 'No review provided.'}</p>
-                        <p>Visited: ${dateTimeVisited || 'N/A'}</p>
-                    </div>
-                `;
-
-                marker.addListener("click", () => {
-                    infoWindow.close();
-                    infoWindow.setContent(infoWindowContent);
-                    infoWindow.open(map, marker);
-                });
-            });
-        }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk&libraries=marker&callback=initMap"></script>
-</body>
-</html>
+                        ${embeddablePhotoUrl ? `<img src="${embeddablePhotoUrl}" alt="${mealName} photo">`
