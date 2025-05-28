@@ -39,28 +39,34 @@
     <div id="map"></div>
 
     <script>
-        // It's generally not recommended to hardcode API keys directly in public client-side code.
-        // For production, consider using server-side proxies or environment variables.
-        // For personal projects, it's often acceptable.
-        const Maps_API_KEY = 'AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk'; // Replace with your actual API key
+        const Maps_API_KEY = 'YOUR_Maps_API_KEY'; // Replace with your actual API key
         const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO59oNSg-L/pub?gid=683707284&single=true&output=csv';
 
         let map; // Declared globally or within a scope that allows access
 
         // Function to convert Google Drive share links to direct image embed links
+        // COMMENTED OUT: This function is not currently used since photo display is disabled.
+        // You would reactivate this, or replace it, if you use a new image hosting solution.
+        /*
         function convertDriveUrlForImage(url) {
             if (!url) return '';
-            // Handle both common Google Drive share link formats
             let match = url.match(/\/d\/([a-zA-Z0-9_-]+)(?:\/view|\/edit)?(?:[?#].*)?$|\/open\?id=([a-zA-Z0-9_-]+)/);
 
             if (match) {
-                const fileId = match[1] || match[2]; // Get file ID from either capture group
+                const fileId = match[1] || match[2];
                 if (fileId) {
                     return `https://drive.google.com/uc?id=${fileId}&export=download`;
                 }
             }
-            return url; // Return original URL if no match found
+            return url;
         }
+        */
+        // Placeholder for the convertDriveUrlForImage function
+        // It now simply returns the URL or an empty string, effectively disabling the conversion.
+        function convertDriveUrlForImage(url) {
+            return url || '';
+        }
+
 
         // Function to fetch and parse CSV data
         async function fetchCsvData(url) {
@@ -71,7 +77,6 @@
                 }
                 const text = await response.text();
 
-                // Handle potential Byte Order Mark (BOM) for CSVs
                 const cleanText = text.startsWith('\ufeff') ? text.substring(1) : text;
 
                 const rows = cleanText.trim().split('\n');
@@ -80,17 +85,14 @@
                     return [];
                 }
 
-                // Handle headers more robustly, remove potential quotes and extra spaces
                 const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
 
                 const data = [];
 
                 for (let i = 1; i < rows.length; i++) {
                     const currentRow = rows[i].trim();
-                    if (!currentRow) continue; // Skip empty rows
+                    if (!currentRow) continue;
 
-                    // Regex to split CSV by commas, handling quoted fields correctly
-                    // This regex is generally more robust for standard CSVs
                     const values = currentRow.match(/(?:[^,"]+|"(?:[^"]|"")*")+/g);
 
                     if (!values || values.length !== headers.length) {
@@ -101,9 +103,8 @@
                     let row = {};
                     headers.forEach((h, j) => {
                         let value = values[j] ? values[j].trim() : '';
-                        // Remove surrounding quotes if present
                         if (value.startsWith('"') && value.endsWith('"')) {
-                            value = value.substring(1, value.length - 1).replace(/""/g, '"'); // Handle escaped quotes
+                            value = value.substring(1, value.length - 1).replace(/""/g, '"');
                         }
                         row[h] = value;
                     });
@@ -112,54 +113,48 @@
                 return data;
             } catch (error) {
                 console.error('Error fetching or parsing CSV data:', error);
-                return []; // Return empty array on error
+                return [];
             }
         }
 
         // Initialize the map and add markers
         async function initMap() {
-            // Import necessary libraries
             const { Map } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const { InfoWindow } = await google.maps.importLibrary("maps");
 
-            // Initialize the map
             map = new Map(document.getElementById("map"), {
                 center: { lat: 25.0330, lng: 121.5654 }, // Taipei center
-                zoom: 12, // Changed to a more zoomed-in level for local meals
-                mapId: 'da81416df988f8dbe057d2cb', // Recommended for Advanced Markers and future features
-                // You can get a Map ID from Google Cloud Console -> Maps -> Map Management
+                zoom: 12,
+                mapId: 'da81416df988f8dbe057d2cb', // Your Map ID
             });
 
-            // Fetch meal data from Google Sheet
             const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
             const infoWindow = new InfoWindow();
 
-            // Loop through meals and add markers
             meals.forEach(meal => {
-                // Ensure column names match your CSV headers exactly (case-sensitive)
                 const restaurantName = meal['Restaurant Name'];
                 const mealName = meal['Meal Name/ Dish'];
-                const photoUrl = meal['Upload a photo of the meal.'];
-                const latitude = parseFloat(meal['Location- Latitude']); // Watch for potential extra spaces in header
-                const longitude = parseFloat(meal['Location- Longitude']); // Watch for potential extra spaces in header
+                const photoUrl = meal['Upload a photo of the meal.']; // Still extracting, but not used below
+                const latitude = parseFloat(meal['Location- Latitude']);
+                const longitude = parseFloat(meal['Location- Longitude']);
                 const rating = meal['Overall Rating'];
                 const review = meal['Notes'];
-                const dateOfMeal = meal['Date of Meal']; // Added for potential use
+                const dateOfMeal = meal['Date of Meal'];
 
                 if (isNaN(latitude) || isNaN(longitude)) {
-                    console.warn(`Skipping invalid location for: ${restaurantName || 'Unknown'} - ${mealName || 'Unknown'} (Lat: ${meal['Location - Latitude']}, Lng: ${meal['Location - Longitude']})`);
-                    return; // Skip this entry if coordinates are invalid
+                    console.warn(`Skipping invalid location for: ${restaurantName || 'Unknown'} - ${mealName || 'Unknown'} (Lat: ${meal['Location- Latitude']}, Lng: ${meal['Location- Longitude']})`);
+                    return;
                 }
 
                 const position = { lat: latitude, lng: longitude };
                 const marker = new AdvancedMarkerElement({
                     map: map,
                     position: position,
-                    title: `${restaurantName} - ${mealName}` // Title for accessibility/hover
+                    title: `${restaurantName} - ${mealName}`
                 });
 
-                const embeddablePhotoUrl = convertDriveUrlForImage(photoUrl);
+                // const embeddablePhotoUrl = convertDriveUrlForImage(photoUrl); // COMMENTED OUT: No longer processing photo URL for embedding
 
                 // Construct InfoWindow content
                 const infoWindowContent = `
@@ -168,10 +163,8 @@
                         <p>Rating: ${rating || 'N/A'}/5 stars</p>
                         ${review ? `<p>Review: ${review}</p>` : ''}
                         ${dateOfMeal ? `<p>Date: ${dateOfMeal}</p>` : ''}
-                        ${embeddablePhotoUrl ? `<img src="${embeddablePhotoUrl}" alt="${mealName || 'Meal'} photo">` : ''}
-                    </div>`;
+                        </div>`;
 
-                // Add click listener to marker to open InfoWindow
                 marker.addListener('gmp-click', () => {
                     infoWindow.setContent(infoWindowContent);
                     infoWindow.open({
@@ -182,7 +175,6 @@
             });
         }
 
-        // Expose initMap to the global window object for the Google Maps API callback
         window.initMap = initMap;
     </script>
 
