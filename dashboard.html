@@ -37,14 +37,28 @@
     <div id="map"></div>
 
     <script>
-        const Maps_API_KEY = 'AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk';
+        // Load PapaParse CSV parser from CDN
+        function loadPapaParse() {
+            return new Promise((resolve) => {
+                const script = document.createElement('script');
+                script.src = "https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js";
+                script.onload = () => resolve();
+                document.head.appendChild(script);
+            });
+        }
+
+        const Maps_API_KEY = 'AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk';  // Your new restricted API key
         const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO59oNSg-L/pub?gid=683707284&single=true&output=csv';
 
         let map;
 
         function convertDriveUrlForImage(url) {
             if (!url) return '';
-            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)\/view/);
+            // Try to parse Google Drive URLs in different formats
+            let match = url.match(/\/d\/([a-zA-Z0-9_-]+)\/view/);
+            if (!match) {
+                match = url.match(/open\?id=([a-zA-Z0-9_-]+)/);
+            }
             if (match && match[1]) {
                 return `https://drive.google.com/uc?id=${match[1]}&export=download`;
             }
@@ -54,21 +68,24 @@
         async function fetchCsvData(url) {
             const response = await fetch(url);
             const text = await response.text();
-            const rows = text.trim().split('\n');
-            const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
-            const data = [];
-            for (let i = 1; i < rows.length; i++) {
-                const values = rows[i].split(',').map(v => v.trim().replace(/"/g, ''));
-                if (values.length === headers.length) {
-                    let row = {};
-                    headers.forEach((h, j) => row[h] = values[j]);
-                    data.push(row);
-                }
-            }
-            return data;
+            return new Promise((resolve, reject) => {
+                Papa.parse(text, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        resolve(results.data);
+                    },
+                    error: function(err) {
+                        reject(err);
+                    }
+                });
+            });
         }
 
         async function initMap() {
+            // Load PapaParse first
+            await loadPapaParse();
+
             const { Map } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
             const { InfoWindow } = await google.maps.importLibrary("maps");
@@ -108,9 +125,9 @@
                     <div class="info-content">
                         <h3>${restaurantName} - ${mealName}</h3>
                         <p>Date: ${dateTimeVisited || 'N/A'}</p>
-                        <p>Rating: ${rating || 'N/A'}/5 stars</p>
+                        <p>Rating: ${rating || 'N/A'}/5</p>
+                        <p>Notes: ${review || 'N/A'}</p>
                         ${embeddablePhotoUrl ? `<img src="${embeddablePhotoUrl}" alt="${mealName} photo">` : ''}
-                        <p>${review || ''}</p>
                     </div>
                 `;
 
@@ -121,14 +138,19 @@
             });
         }
 
-        function loadGoogleMapsScript() {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${Maps_API_KEY}&callback=initMap&v=beta&libraries=marker`;
-            script.async = true;
-            document.head.appendChild(script);
+        // Load Google Maps script and initialize map
+        function loadGoogleMaps() {
+            return new Promise((resolve) => {
+                window.initMap = () => resolve();
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${Maps_API_KEY}&callback=initMap&libraries=marker`;
+                script.async = true;
+                document.head.appendChild(script);
+            });
         }
 
-        loadGoogleMapsScript();
+        // Start everything
+        loadGoogleMaps();
     </script>
 </body>
 </html>
