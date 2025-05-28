@@ -1,390 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <title>My Taiwan Meal Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taipei Environmental Health Research Dashboard</title>
     <style>
-        * {
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            color: #333;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 1.2em;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 3em;
-            font-weight: bold;
-            color: #667eea;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 1.1em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .progress-section {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            background: #f0f0f0;
-            height: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+        #map {
             height: 100%;
-            border-radius: 10px;
-            transition: width 0.8s ease;
-            width: 0%;
+            width: 100%;
         }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .info-content {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
         }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
+        .info-content img {
+            max-width: 250px;
+            height: auto;
+            display: block;
+            margin-top: 5px;
+            border-radius: 4px;
         }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
+        .info-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
         }
-
-        .btn-primary:hover {
-            background: #5a67d8;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #4a5568;
-        }
-
-        .btn-secondary:hover {
-            background: #cbd5e0;
-        }
-
-        .btn-success {
-            background: #48bb78;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #38a169;
-        }
-
-        .activity-log {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .activity-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            opacity: 0;
-            animation: slideIn 0.5s ease forwards;
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-time {
-            color: #888;
-            font-size: 0.9em;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes countUp {
-            from {
-                transform: scale(1);
-            }
-            to {
-                transform: scale(1.1);
-            }
-        }
-
-        .stat-number.updating {
-            animation: countUp 0.3s ease;
+        .info-content p {
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="header">
-            <h1>🌱 Environmental Health Research</h1>
-            <p>Taipei Housing & Health Study - Live Dashboard</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-number" id="interview-count">0</span>
-                <span class="stat-label">Interviews Complete</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="completion-rate">0%</span>
-                <span class="stat-label">Completion Rate</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="districts-covered">0</span>
-                <span class="stat-label">Districts Covered</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="days-active">1</span>
-                <span class="stat-label">Days Active</span>
-            </div>
-        </div>
-
-        <div class="progress-section">
-            <div class="progress-header">
-                <h3>Research Progress</h3>
-                <span id="progress-text">0 of 50 interviews</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <div class="controls">
-                <button class="btn btn-primary" onclick="completeInterview()">
-                    ✅ Complete Interview
-                </button>
-                <button class="btn btn-success" onclick="addMultiple()">
-                    🚀 Add 5 Interviews
-                </button>
-                <button class="btn btn-secondary" onclick="resetProgress()">
-                    🔄 Reset Progress
-                </button>
-            </div>
-        </div>
-
-        <div class="activity-log">
-            <h3 style="margin-bottom: 15px;">Recent Activity</h3>
-            <div id="activity-list">
-                <div class="activity-item">
-                    <div>Dashboard initialized</div>
-                    <div class="activity-time" id="start-time"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="map"></div>
 
     <script>
-        // JavaScript starts here - this is where the magic happens!
-        
-        // Variables to store our data (like Smartsheet cells)
-        let interviewsCompleted = 0;
-        const targetInterviews = 50;
-        let districtsCovered = 0;
-        const startTime = new Date();
+        const Maps_API_KEY = 'AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk';
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/1yo4USRjkel7Oz7oqb0wf03K7ii-VojzZfOWmM2q7Yv4/pub?output=csv';
 
-        // Function to update the display (like a Smartsheet formula)
-        function updateDisplay() {
-            // Calculate completion rate (like =interviews/target*100)
-            const completionRate = Math.round((interviewsCompleted / targetInterviews) * 100);
-            
-            // Update the numbers on screen
-            document.getElementById('interview-count').textContent = interviewsCompleted;
-            document.getElementById('completion-rate').textContent = completionRate + '%';
-            document.getElementById('progress-text').textContent = `${interviewsCompleted} of ${targetInterviews} interviews`;
-            
-            // Update progress bar (visual representation)
-            const progressBar = document.getElementById('progress-fill');
-            progressBar.style.width = completionRate + '%';
-            
-            // Add animation effect
-            document.getElementById('interview-count').classList.add('updating');
-            setTimeout(() => {
-                document.getElementById('interview-count').classList.remove('updating');
-            }, 300);
-        }
+        let map;
 
-        // Function to complete one interview (like clicking a button in Smartsheet)
-        function completeInterview() {
-            if (interviewsCompleted < targetInterviews) {
-                interviewsCompleted++;
-                
-                // Randomly add districts (simulating geographic spread)
-                if (Math.random() > 0.7 && districtsCovered < 12) {
-                    districtsCovered++;
-                    document.getElementById('districts-covered').textContent = districtsCovered;
-                }
-                
-                updateDisplay();
-                logActivity(`Interview #${interviewsCompleted} completed`);
-            } else {
-                logActivity('🎉 All interviews completed! Research phase done!');
+        function convertDriveUrlForImage(url) {
+            if (!url) return '';
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)\/view/);
+            if (match && match[1]) {
+                return `https://drive.google.com/uc?id=${match[1]}&export=download`;
             }
+            return url;
         }
 
-        // Function to add multiple interviews at once
-        function addMultiple() {
-            for (let i = 0; i < 5 && interviewsCompleted < targetInterviews; i++) {
-                interviewsCompleted++;
-                if (Math.random() > 0.6 && districtsCovered < 12) {
-                    districtsCovered++;
+        async function fetchCsvData(url) {
+            const response = await fetch(url);
+            const text = await response.text();
+            const rows = text.trim().split('\n');
+            const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const data = [];
+            for (let i = 1; i < rows.length; i++) {
+                const values = rows[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                if (values.length === headers.length) {
+                    let row = {};
+                    headers.forEach((h, j) => row[h] = values[j]);
+                    data.push(row);
                 }
             }
-            document.getElementById('districts-covered').textContent = districtsCovered;
-            updateDisplay();
-            logActivity('Batch of interviews processed');
+            return data;
         }
 
-        // Function to reset everything
-        function resetProgress() {
-            interviewsCompleted = 0;
-            districtsCovered = 0;
-            document.getElementById('districts-covered').textContent = 0;
-            updateDisplay();
-            logActivity('Progress reset - starting fresh');
+        async function initMap() {
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            const { InfoWindow } = await google.maps.importLibrary("maps");
+
+            map = new Map(document.getElementById("map"), {
+                center: { lat: 25.0330, lng: 121.5654 },
+                zoom: 12,
+                mapId: "YOUR_MAP_ID",
+            });
+
+            const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
+            const infoWindow = new InfoWindow();
+
+            meals.forEach(meal => {
+                const restaurantName = meal['Restaurant Name'];
+                const mealName = meal['Meal Name / Dish'];
+                const photoUrl = meal['Photo'];
+                const latitude = parseFloat(meal.Latitude);
+                const longitude = parseFloat(meal.Longitude);
+                const rating = meal['Rating (1-5 stars)'];
+                const review = meal.Review;
+                const dateTimeVisited = meal['Date & Time Visited'];
+
+                if (isNaN(latitude) || isNaN(longitude)) {
+                    console.warn(`Skipping invalid location: ${restaurantName} - ${mealName}`);
+                    return;
+                }
+
+                const position = { lat: latitude, lng: longitude };
+                const marker = new AdvancedMarkerElement({
+                    map: map,
+                    position: position,
+                    title: `${restaurantName} - ${mealName}`
+                });
+
+                const embeddablePhotoUrl = convertDriveUrlForImage(photoUrl);
+                const infoWindowContent = `
+                    <div class="info-content">
+                        <h3>${restaurantName} - ${mealName}</h3>
+                        <p>Rating: ${rating || 'N/A'}/5 stars</p>
+                        ${embeddablePhotoUrl ? `<img src="${embeddablePhotoUrl}" alt="${mealName} photo">` : ''}
+                        <p>${review || 'No review provided.'}</p>
+                        <p>Visited: ${dateTimeVisited || 'N/A'}</p>
+                    </div>
+                `;
+
+                marker.addListener("click", () => {
+                    infoWindow.close();
+                    infoWindow.setContent(infoWindowContent);
+                    infoWindow.open(map, marker);
+                });
+            });
         }
-
-        // Function to add activity to the log
-        function logActivity(message) {
-            const activityList = document.getElementById('activity-list');
-            const newActivity = document.createElement('div');
-            newActivity.className = 'activity-item';
-            
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            
-            newActivity.innerHTML = `
-                <div>${message}</div>
-                <div class="activity-time">${timeString}</div>
-            `;
-            
-            // Add to top of list (most recent first)
-            activityList.insertBefore(newActivity, activityList.firstChild);
-            
-            // Keep only last 10 activities
-            while (activityList.children.length > 10) {
-                activityList.removeChild(activityList.lastChild);
-            }
-        }
-
-        // Function to update days active (runs automatically)
-        function updateDaysActive() {
-            const now = new Date();
-            const daysDiff = Math.ceil((now - startTime) / (1000 * 60 * 60 * 24));
-            document.getElementById('days-active').textContent = daysDiff;
-        }
-
-        // Initialize the dashboard when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set start time
-            document.getElementById('start-time').textContent = startTime.toLocaleTimeString();
-            
-            // Update display initially
-            updateDisplay();
-            
-            // Update days active every hour
-            setInterval(updateDaysActive, 3600000);
-        });
-
-        // Bonus: Add some keyboard shortcuts (like Smartsheet hotkeys)
-        document.addEventListener('keydown', function(event) {
-            // Press 'C' to complete interview
-            if (event.key.toLowerCase() === 'c' && !event.ctrlKey) {
-                completeInterview();
-            }
-            // Press 'R' to reset
-            if (event.key.toLowerCase() === 'r' && !event.ctrlKey) {
-                resetProgress();
-            }
-        });
     </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-yKsbe9UEXo-ftRM-cA1XbeGknQ9azyk&libraries=marker&callback=initMap"></script>
 </body>
 </html>
