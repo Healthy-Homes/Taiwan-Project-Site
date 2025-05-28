@@ -127,7 +127,7 @@
             map = new Map(document.getElementById("map"), {
                 center: { lat: 25.0330, lng: 121.5654 }, // Taipei center
                 zoom: 12, // Changed to a more zoomed-in level for local meals
-                mapId: 'YOUR_MAP_ID', // Recommended for Advanced Markers and future features
+                mapId: 'da81416df988f8dbe057d2cb', // Recommended for Advanced Markers and future features
                 // You can get a Map ID from Google Cloud Console -> Maps -> Map Management
             });
 
@@ -172,7 +172,7 @@
                     </div>`;
 
                 // Add click listener to marker to open InfoWindow
-                marker.addListener('click', () => {
+                marker.addListener('gmp-click', () => {
                     infoWindow.setContent(infoWindowContent);
                     infoWindow.open({
                         anchor: marker,
