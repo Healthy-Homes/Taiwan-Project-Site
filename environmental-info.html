@@ -1,98 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Environmental Info - Matt's Taiwan Project</title>
+  <meta charset="UTF-8">
+  <title>Sights & Sounds – Taiwan Field Journal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
   <style>
-    body {
-      background-color: black;
-      color: #39ff14;
-      font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
-      margin: 0;
-      padding: 20px;
-      line-height: 1.6;
+    .entry {
+      margin-bottom: 60px;
     }
-
-    header {
-      background-color: #111;
-      padding: 10px 20px;
-      border-bottom: 1px solid #39ff14;
-    }
-
-    nav a {
-      color: #39ff14;
-      margin-right: 20px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    h1, h2 {
-      border-bottom: 1px solid #39ff14;
-      padding-bottom: 0.2em;
-      margin-top: 40px;
-    }
-
-    a {
-      color: #39ff14;
-      text-decoration: underline;
-    }
-
-    .widget-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px; /* reduced vertical space */
-      align-items: center;
-      margin-bottom: 40px;
-    }
-
-    .widget-container > div {
-      width: 600px;
-      height: 450px;
-    }
-
-    iframe {
-      border: none;
+    .entry img {
+      width: 100%;
+      height: auto;
       display: block;
-      margin: 0 auto;
+      border: 2px solid #39ff14;
     }
-
-    @media (max-width: 640px) {
-      .widget-container > div,
-      iframe {
-        width: 100%;
-        height: 400px;
-      }
+    .entry audio {
+      width: 100%;
+      margin-top: 10px;
+      border: 1px solid #39ff14;
+    }
+    .caption {
+      margin-top: 10px;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
 
   <header>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="environmental-info.html">Environmental Info</a>
-    <a href="dashboard.html">Meal Reviews Map</a>
-    <a href="connect.html">Connect</a>
-  </nav>
-</header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="environmental-info.html">Sights & Sounds</a>
+      <a href="dashboard.html">Meal Reviews Map</a>
+      <a href="connect.html">Connect</a>
+    </nav>
+  </header>
 
-  <h1>Real-Time Air Quality: Taipei & Portland (°F)</h1>
+  <h1>Sights & Sounds: Taiwan Field Journal</h1>
 
-  <div class="widget-container">
-    <div name="airvisual_widget" key="6833454f4f2d493b21824ed3" unit="f"></div>
-    <div name="airvisual_widget" key="683345d00c48dace4f294d33" unit="f"></div>
+  <p>This journal pairs ambient recordings and photographs from my fieldwork in Taiwan. Each entry aims to convey a sense of place and atmosphere.</p>
+
+  <div class="section entry">
+    <img src="images/sample-photo.jpg" alt="Example scene from Taipei">
+    <audio controls>
+      <source src="audio/sample-audio.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <p class="caption">Morning market near Gongguan, Taipei. Vendors calling, scooters passing, metal shutters clattering open.</p>
   </div>
 
-  <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
-
-  <h2>Public Restrooms in Taipei</h2>
-
-  <iframe src="https://www.google.com/maps/d/u/1/embed?mid=1odmF4C4N9sFOAX6mhPUYuy-wZ54QcEI&ehbc=2E312F" width="640" height="480"></iframe>
+  <div class="section entry">
+    <img src="images/sample-photo2.jpg" alt="Mountain path in Hualien">
+    <audio controls>
+      <source src="audio/sample-audio2.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <p class="caption">Birdsong and breeze on a mountain trail outside Hualien. Just after a morning rain.</p>
+  </div>
 
 </body>
 </html>
