@@ -1,22 +1,16 @@
 body {
-  background-color: #0a0a0a;
+  background-color: black;
   color: #39ff14;
   font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
   margin: 0;
-  padding: 20px;
   line-height: 1.6;
+  padding: 20px;
 }
 
 header {
   background-color: #111;
   padding: 10px 20px;
   border-bottom: 1px solid #39ff14;
-}
-
-header nav {
-  display: flex;
-  gap: 15px;
-  padding: 15px 0;
 }
 
 nav a {
@@ -31,13 +25,9 @@ nav a:hover {
 }
 
 h1, h2 {
-  text-align: center;
   border-bottom: 1px solid #39ff14;
   padding-bottom: 0.2em;
   margin-top: 40px;
-}
-
-p {
   text-align: center;
 }
 
@@ -81,42 +71,6 @@ a {
   margin-bottom: 60px;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-
-.entry {
-  background: #1a1a1a;
-  border: 1px solid #39ff14;
-  padding: 10px;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.entry img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 4px;
-}
-
-.entry audio {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.caption {
-  margin-top: 10px;
-  font-style: italic;
-  font-size: 0.9em;
-  color: #ccc;
-}
-
 @media (max-width: 600px) {
   body {
     padding: 10px;
@@ -137,56 +91,74 @@ a {
   }
 }
 
-/* === Lightbox Fixes === */
-
-/* Ensure Lightbox overlay and controls are always on top */
-.lightboxOverlay,
-.lightbox {
-  z-index: 9999;
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: 10px;
+  gap: 20px;
+  padding: 20px;
+  align-items: start;
 }
 
-/* Lightbox navigation arrows and close button */
+.entry {
+  background: #1a1a1a;
+  border: 1px solid #39ff14;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.entry > * {
+  margin-bottom: 10px;
+}
+
+.entry img,
+.entry video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.entry audio {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.caption {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+/* Lightbox z-index fix */
+.lightboxOverlay,
+.lightbox {
+  z-index: 9999 !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
 .lb-nav a.lb-prev,
 .lb-nav a.lb-next,
 .lb-close {
-  display: block;
-  z-index: 10000;
-  opacity: 1;
-  color: #39ff14;
+  display: block !important;
+  opacity: 1 !important;
+  z-index: 10000 !important;
+  color: #39ff14 !important;
 }
 
-/* Restore visible and functional close button */
 .lb-close {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 40px;
-  color: #39ff14;
-  text-decoration: none;
-  z-index: 10000;
-}
-/* Lightbox Fix: Ensure overlay and close button are clickable */
-body.lb-open {
-  overflow: hidden; /* Prevent scroll bleed-through */
-}
-
-.lb-overlay,
-.lb-dataContainer,
-.lb-nav,
-.lb-close {
+  display: block !important;
   z-index: 9999 !important;
-  pointer-events: auto !important;
-}
-
-.lb-close {
+  color: white !important;
+  font-size: 40px !important;
   position: absolute !important;
   top: 10px;
   right: 20px;
-  font-size: 36px;
+  text-decoration: none;
   opacity: 1 !important;
-  color: #fff !important;
-  text-shadow: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
 }
