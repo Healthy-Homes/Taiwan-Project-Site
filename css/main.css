@@ -148,3 +148,20 @@ h1, p {
   font-size: 0.9em;
   color: #ccc;
 }
+/* Force Lightbox navigation UI to display above site styles */
+.lightboxOverlay,
+.lightbox {
+  z-index: 9999 !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+/* Optional: Style navigation buttons if not appearing */
+.lb-nav a.lb-prev,
+.lb-nav a.lb-next,
+.lb-close {
+  display: block !important;
+  opacity: 1 !important;
+  z-index: 10000 !important;
+  color: #39ff14 !important;
+}
