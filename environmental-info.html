@@ -22,12 +22,40 @@
       text-transform: uppercase;
       margin-top: 10px;
     }
+
     .lightbox-caption {
       text-align: center;
       font-style: italic;
       font-size: 0.9em;
       padding-top: 10px;
-      color: #ccc;
+      color: #39ff14;
+    }
+
+    .caption {
+      color: #39ff14;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid #39ff14;
+      width: 100%;
+      display: inline-block;
+      animation:
+        typewriter 2.5s steps(40, end),
+        blink 0.75s step-end infinite;
+      color: #39ff14;
     }
   </style>
 </head>
@@ -42,12 +70,10 @@
   </header>
 
   <main id="main-content">
-    <h1>Sights & Sounds: Taiwan Field Journal</h1>
-    <p>This journal pairs ambient recordings, photographs, and short videos from my fieldwork in Taiwan. Each entry conveys a sense of place and atmosphere.</p>
+    <h1 class="typewriter">Sights & Sounds: Taiwan Field Journal</h1>
+    <p class="typewriter">This journal pairs ambient recordings, photographs, and short videos from my fieldwork in Taiwan. Each entry conveys a sense of place and atmosphere.</p>
 
     <div class="gallery">
-      <!-- Entries 1 through 14 -->
-      <!-- IMAGE + AUDIO entries -->
       <!-- Entry 1 -->
       <div class="entry">
         <a href="images/sights-sounds/1-bali.jpeg" data-lightbox="gallery" data-title="The oversized 'BALI' sculpture across from Tamsui, glowing in the golden hour.<br><audio controls><source src='audio/sights-sounds/1-bali.mp3' type='audio/mpeg'></audio>">
