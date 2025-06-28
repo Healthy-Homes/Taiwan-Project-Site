@@ -78,8 +78,8 @@
     .info-content {
       font-size: 14px;
       max-width: 300px;
-      background-color: #fff;
-      color: #000;
+      background-color: #000;
+      color: #39ff14;
       padding: 10px;
       border-radius: 6px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -88,7 +88,7 @@
     .info-content h3 {
       margin: 0 0 5px 0;
       font-size: 16px;
-      color: #000;
+      color: #39ff14;
     }
 
     .info-content p {
@@ -253,7 +253,6 @@
           infoWindow.open({ anchor: marker, map });
         });
 
-        // Add to review list
         const listItem = document.createElement("div");
         listItem.className = "review-item";
         listItem.innerHTML = `<strong>${restaurantName}</strong><br>${mealName}`;
