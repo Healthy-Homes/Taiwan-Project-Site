@@ -96,6 +96,31 @@
       padding-bottom: 3px;
     }
 
+    #reviewList {
+      position: fixed;
+      right: 0;
+      top: 60px;
+      width: 300px;
+      height: calc(100vh - 60px);
+      background-color: #111;
+      overflow-y: auto;
+      border-left: 1px solid #39ff14;
+      padding: 10px;
+      color: #39ff14;
+      z-index: 998;
+    }
+
+    .review-item {
+      cursor: pointer;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #39ff14;
+      padding-bottom: 8px;
+    }
+
+    .review-item:hover {
+      background-color: #222;
+    }
+
     #back-to-top {
       position: fixed;
       bottom: 20px;
@@ -129,6 +154,7 @@
   </header>
 
   <div id="map"></div>
+  <div id="reviewList"></div>
   <a href="#top" id="back-to-top">Back to Top</a>
 
   <script>
@@ -194,8 +220,9 @@
 
       const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
       const infoWindow = new InfoWindow();
+      const reviewList = document.getElementById("reviewList");
 
-      meals.forEach(meal => {
+      meals.forEach((meal, index) => {
         const { ['Restaurant Name']: restaurantName, ['Date of Meal']: dateOfMeal, ['Meal Name/ Dish']: mealName,
                 ['Location- Latitude']: lat, ['Location- Longitude']: lng, ['Overall Rating']: rating,
                 ['Tastiness']: tastiness, ['Ambiance/ Service']: ambianceService, ['Notes']: notes } = meal;
@@ -225,14 +252,24 @@
           infoWindow.setContent(infoWindowContent);
           infoWindow.open({ anchor: marker, map });
         });
+
+        // Add to review list
+        const listItem = document.createElement("div");
+        listItem.className = "review-item";
+        listItem.innerHTML = `<strong>${restaurantName}</strong><br>${mealName}`;
+        listItem.onclick = () => {
+          map.panTo(position);
+          map.setZoom(15);
+          infoWindow.setContent(infoWindowContent);
+          infoWindow.open({ anchor: marker, map });
+        };
+        reviewList.appendChild(listItem);
       });
     }
 
     window.initMap = initMap;
   </script>
 
-  <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk&callback=initMap&v=beta&libraries=marker">
-  </script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk&callback=initMap&v=beta&libraries=marker"></script>
 </body>
 </html>
