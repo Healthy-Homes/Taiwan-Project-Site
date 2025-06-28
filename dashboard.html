@@ -1,216 +1,232 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Taiwan Meal Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-        .info-content {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            max-width: 300px; /* Limit width of info window content */
-        }
-        .info-content h3 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
-        }
-        .info-content p {
-            margin: 0;
-            padding-bottom: 3px; /* Small padding between paragraphs */
-        }
-        /* Styles for disabled photo feature - kept for future use */
-        .info-content img {
-            max-width: 250px;
-            height: auto;
-            display: block;
-            margin-top: 5px;
-            border-radius: 4px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>My Taiwan Meal Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', Courier, monospace, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      background-color: #000;
+      color: #39ff14;
+    }
+
+    header {
+      background-color: #111;
+      padding: 10px 20px;
+      border-bottom: 1px solid #39ff14;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #39ff14;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a.active {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .nav-links.open {
+        display: flex;
+        margin-top: 10px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+
+    #map {
+      height: calc(100vh - 60px);
+      width: 100%;
+    }
+
+    .info-content {
+      font-size: 14px;
+      max-width: 300px;
+    }
+
+    .info-content h3 {
+      margin: 0 0 5px 0;
+      font-size: 16px;
+    }
+
+    .info-content p {
+      margin: 0;
+      padding-bottom: 3px;
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #39ff14;
+      color: #000;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      display: none;
+    }
+
+    #back-to-top:hover {
+      background: #2ecc71;
+    }
+  </style>
 </head>
+
 <body>
-    <div id="map"></div>
+  <header>
+    <nav>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="environmental-info.html">Sights & Sounds</a>
+        <a href="dashboard.html" class="active">Meal Reviews Map</a>
+        <a href="connect.html">Connect</a>
+      </div>
+    </nav>
+  </header>
 
-    <script>
-        // Replace with your actual Google Maps API key
-        const Maps_API_KEY = 'AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk'; 
+  <div id="map"></div>
+  <a href="#top" id="back-to-top">Back to Top</a>
 
-        // Your Google Sheet CSV URL (ensure it's publicly accessible and for the correct tab)
-        // This URL must point to your 'Map Data' tab after you've published it to web as CSV.
-        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO59oNSg-L/pub?gid=0&single=true&output=csv';
+  <script>
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('open');
+    }
 
-        let map; // Declare map variable
+    window.onscroll = function() {
+      document.getElementById("back-to-top").style.display = (document.documentElement.scrollTop > 100) ? "block" : "none";
+    };
 
-        // --- Photo Feature Placeholder (Currently Disabled) ---
-        // This function would be used to convert Google Drive URLs to embeddable ones.
-        // It's currently simplified to just return the URL or an empty string,
-        // effectively disabling image display due to CORS issues with Google Drive.
-        // If you host photos elsewhere (e.g., GitHub repo, Imgur), you'd adapt this function
-        // or remove its call if direct URLs are used.
-        function convertDriveUrlForImage(url) {
-            // Original logic for Google Drive URLs (commented out)
-            /*
-            if (!url) return '';
-            let match = url.match(/\/d\/([a-zA-Z0-9_-]+)(?:\/view|\/edit)?(?:[?#].*)?$|\/open\?id=([a-zA-Z0-9_-]+)/);
-            if (match) {
-                const fileId = match[1] || match[2];
-                if (fileId) {
-                    return `https://drive.google.com/uc?id=${fileId}&export=download`;
-                }
+    const Maps_API_KEY = 'AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk';
+    const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOkDWVy83RTZw0S2Ihd3lM9Y82P0bCx7EgfeLuYoPCGEFOMwjdMlhFB2uVegLoIqKSuQwO59oNSg-L/pub?gid=0&single=true&output=csv';
+
+    function convertDriveUrlForImage(url) {
+      return url || '';
+    }
+
+    async function fetchCsvData(url) {
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+        const cleanText = text.startsWith('\ufeff') ? text.substring(1) : text;
+        const rows = cleanText.trim().split('\n');
+        const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+        const data = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          const currentRow = rows[i].trim();
+          if (!currentRow) continue;
+          const values = currentRow.match(/(?:[^,"]+|"(?:[^"]|"")*")+/g);
+          if (!values || values.length !== headers.length) continue;
+
+          let row = {};
+          headers.forEach((h, j) => {
+            let value = values[j] ? values[j].trim() : '';
+            if (value.startsWith('"') && value.endsWith('"')) {
+              value = value.slice(1, -1).replace(/""/g, '"');
             }
-            */
-            return url || ''; // For now, just return the URL as-is (or empty)
-        }
-        // --- End Photo Feature Placeholder ---
-
-
-        // Function to fetch and parse CSV data
-        async function fetchCsvData(url) {
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const text = await response.text();
-
-                // Handle potential Byte Order Mark (BOM) for CSVs
-                const cleanText = text.startsWith('\ufeff') ? text.substring(1) : text;
-
-                const rows = cleanText.trim().split('\n');
-                if (rows.length === 0) {
-                    console.warn('CSV file is empty.');
-                    return [];
-                }
-
-                // Headers are now 10, based on your TextEdit output
-                const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-
-                const data = [];
-
-                for (let i = 1; i < rows.length; i++) {
-                    const currentRow = rows[i].trim();
-                    if (!currentRow) continue; // Skip empty rows
-
-                    // Robust regex to split CSV by commas, handling quoted fields correctly
-                    const values = currentRow.match(/(?:[^,"]+|"(?:[^"]|"")*")+/g);
-
-                    // THIS IS THE CRITICAL CHECK: headers.length will now be 10, matching your CSV
-                    if (!values || values.length !== headers.length) {
-                        console.warn(`Skipping malformed row ${i}: "${currentRow}" - Expected ${headers.length} columns, got ${values ? values.length : 0}`);
-                        continue;
-                    }
-
-                    let row = {};
-                    headers.forEach((h, j) => {
-                        let value = values[j] ? values[j].trim() : '';
-                        // Remove surrounding quotes if present and handle escaped quotes
-                        if (value.startsWith('"') && value.endsWith('"')) {
-                            value = value.substring(1, value.length - 1).replace(/""/g, '"');
-                        }
-                        row[h] = value;
-                    });
-                    data.push(row);
-                }
-                return data;
-            } catch (error) {
-                console.error('Error fetching or parsing CSV data:', error);
-                return []; // Return empty array on error
-            }
+            row[h] = value;
+          });
+          data.push(row);
         }
 
-        // Initialize the map and add markers
-        async function initMap() {
-            // Import necessary Google Maps libraries
-            const { Map } = await google.maps.importLibrary("maps");
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-            const { InfoWindow } = await google.maps.importLibrary("maps");
+        return data;
+      } catch (error) {
+        console.error('Error fetching or parsing CSV data:', error);
+        return [];
+      }
+    }
 
-            // Initialize the map with your specific Map ID
-            map = new Map(document.getElementById("map"), {
-                center: { lat: 25.0330, lng: 121.5654 }, // Central Taipei coordinates
-                zoom: 12, // Default zoom level
-                mapId: 'da81416df988f8dbe057d2cb', // YOUR Map ID
-            });
+    async function initMap() {
+      const { Map } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+      const { InfoWindow } = await google.maps.importLibrary("maps");
 
-            // Fetch meal data from your Google Sheet CSV
-            const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
-            const infoWindow = new InfoWindow(); // Create a single InfoWindow instance
+      const map = new Map(document.getElementById("map"), {
+        center: { lat: 25.0330, lng: 121.5654 },
+        zoom: 12,
+        mapId: 'da81416df988f8dbe057d2cb',
+      });
 
-            // Loop through each meal entry to create markers
-            meals.forEach(meal => {
-                // Ensure column names exactly match your CSV headers (case-sensitive)
-                const timestamp = meal['Timestamp']; // New: Extract Timestamp
-                const restaurantName = meal['Restaurant Name'];
-                const dateOfMeal = meal['Date of Meal']; // Corrected: This is in your CSV!
-                const mealName = meal['Meal Name/ Dish'];
-                // REMOVED: photoUrl, as it's not in your 10-column CSV
-                const latitude = parseFloat(meal['Location- Latitude']); 
-                const longitude = parseFloat(meal['Location- Longitude']); 
-                const rating = meal['Overall Rating'];
-                const tastiness = meal['Tastiness']; 
-                const ambianceService = meal['Ambiance/ Service']; 
-                const notes = meal['Notes']; // Renamed to 'notes' for clarity
+      const meals = await fetchCsvData(GOOGLE_SHEET_CSV_URL);
+      const infoWindow = new InfoWindow();
 
+      meals.forEach(meal => {
+        const { ['Restaurant Name']: restaurantName, ['Date of Meal']: dateOfMeal, ['Meal Name/ Dish']: mealName,
+                ['Location- Latitude']: lat, ['Location- Longitude']: lng, ['Overall Rating']: rating,
+                ['Tastiness']: tastiness, ['Ambiance/ Service']: ambianceService, ['Notes']: notes } = meal;
 
-                // For debugging: Log the extracted data for each meal
-                console.log("Processing Meal:", {
-                    timestamp, restaurantName, dateOfMeal, mealName, latitude, longitude,
-                    rating, tastiness, ambianceService, notes
-                });
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lng);
+        if (isNaN(latitude) || isNaN(longitude)) return;
 
+        const position = { lat: latitude, lng: longitude };
+        const marker = new AdvancedMarkerElement({
+          map,
+          position,
+          title: `${restaurantName} - ${mealName}`
+        });
 
-                // Skip entries with invalid (non-numeric) coordinates
-                if (isNaN(latitude) || isNaN(longitude)) {
-                    console.warn(`Skipping invalid location for: ${restaurantName || 'Unknown'} - ${mealName || 'Unknown'} (Lat: "${meal['Location- Latitude']}", Lng: "${meal['Location- Longitude']}")`);
-                    return; // Skip this iteration if lat/lng are invalid
-                }
+        const infoWindowContent = `
+          <div class="info-content">
+            <h3>${restaurantName || 'N/A'} - ${mealName || 'N/A'}</h3>
+            <p>Rating: ${rating || 'N/A'}/5</p>
+            ${tastiness ? `<p>Tastiness: ${tastiness}</p>` : ''}
+            ${ambianceService ? `<p>Ambiance/Service: ${ambianceService}</p>` : ''}
+            ${notes ? `<p>Notes: ${notes}</p>` : ''}
+            ${dateOfMeal ? `<p>Date: ${dateOfMeal}</p>` : ''}
+          </div>`;
 
-                const position = { lat: latitude, lng: longitude };
+        marker.addListener('gmp-click', () => {
+          infoWindow.setContent(infoWindowContent);
+          infoWindow.open({ anchor: marker, map });
+        });
+      });
+    }
 
-                // Create an Advanced Marker
-                const marker = new AdvancedMarkerElement({
-                    map: map,
-                    position: position,
-                    title: `${restaurantName} - ${mealName}` // Title for accessibility/hover
-                });
+    window.initMap = initMap;
+  </script>
 
-                // Construct InfoWindow content using template literals
-                const infoWindowContent = `
-                    <div class="info-content">
-                        <h3>${restaurantName || 'N/A'} - ${mealName || 'N/A'}</h3>
-                        <p>Rating: ${rating === '' || rating === undefined ? 'N/A' : rating}/5 stars</p>
-                        ${tastiness ? `<p>Tastiness: ${tastiness}</p>` : ''}
-                        ${ambianceService ? `<p>Ambiance/Service: ${ambianceService}</p>` : ''}
-                        ${notes ? `<p>Notes: ${notes}</p>` : ''}
-                        ${dateOfMeal ? `<p>Date: ${dateOfMeal}</p>` : ''}
-                        </div>`;
-
-                // Add click listener to marker to open InfoWindow
-                marker.addListener('gmp-click', () => { // Using 'gmp-click' for Advanced Markers
-                    infoWindow.setContent(infoWindowContent);
-                    infoWindow.open({
-                        anchor: marker,
-                        map,
-                    });
-                });
-            });
-        }
-
-        // Expose initMap to the global window object for the Google Maps API callback
-        window.initMap = initMap;
-    </script>
-
-    <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk&callback=initMap&v=beta&libraries=marker">
-    </script>
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeimKlA6jGIwlPg2W9sVt_Kqnaa9kPsjk&callback=initMap&v=beta&libraries=marker">
+  </script>
 </body>
 </html>
