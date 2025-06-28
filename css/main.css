@@ -94,9 +94,10 @@ a {
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-rows: 10px;
   gap: 20px;
   padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
   align-items: start;
 }
 
@@ -107,7 +108,7 @@ a {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  justify-content: flex-start;
 }
 
 .entry > * {
@@ -153,7 +154,7 @@ a {
 
 .lb-close {
   display: block !important;
-  z-index: 9999 !important;
+  z-index: 10000 !important;
   color: white !important;
   font-size: 40px !important;
   position: absolute !important;
