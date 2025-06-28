@@ -1,3 +1,4 @@
+/* ---------- GLOBAL ---------- */
 body {
   background-color: black;
   color: #39ff14;
@@ -19,7 +20,6 @@ nav a {
   text-decoration: none;
   font-weight: bold;
 }
-
 nav a:hover {
   text-decoration: underline;
 }
@@ -36,6 +36,77 @@ a {
   text-decoration: underline;
 }
 
+/* ---------- GALLERY LAYOUT (Masonry) ---------- */
+.gallery {
+  column-count: 3;
+  column-gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+@media (max-width: 1000px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 1;
+  }
+}
+
+.entry {
+  background: #1a1a1a;
+  border: 1px solid #39ff14;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.entry img,
+.entry video {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+}
+
+.entry img {
+  height: auto;
+}
+
+.entry video {
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Audio + Caption */
+.entry audio {
+  width: 100%;
+  margin-top: 5px;
+}
+.caption {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+/* ---------- RESPONSIVE FIXES ---------- */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  nav a {
+    display: block;
+    margin: 10px 0;
+  }
+}
+
+/* ---------- TRANSLATION BOX + PHOTO PLACEHOLDER ---------- */
 .translation-box {
   background-color: #111;
   color: #39ff14;
@@ -60,94 +131,18 @@ a {
   justify-content: center;
   text-align: center;
 }
-
 .photo-space img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.section {
-  margin-bottom: 60px;
-}
-
-@media (max-width: 600px) {
-  body {
-    padding: 10px;
-  }
-
-  .translation-box {
-    width: 90%;
-  }
-
-  nav a {
-    display: block;
-    margin: 10px 0;
-  }
-
-  .photo-space {
-    width: 100%;
-    height: auto;
-  }
-}
-
-.gallery {
-  column-count: 3;
-  column-gap: 20px;
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-@media (max-width: 1000px) {
-  .gallery {
-    column-count: 2;
-  }
-}
-
-@media (max-width: 600px) {
-  .gallery {
-    column-count: 1;
-  }
-}
-
-.entry {
-  background: #1a1a1a;
-  border: 1px solid #39ff14;
-  padding: 10px;
-  border-radius: 8px;
-  display: inline-block;
-  margin-bottom: 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.entry img,
-.entry video {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.entry audio {
-  width: 100%;
-  margin-top: 5px;
-}
-
-.caption {
-  font-style: italic;
-  font-size: 0.9em;
-  color: #ccc;
-}
-
-/* Lightbox z-index fix */
+/* ---------- LIGHTBOX OVERRIDES ---------- */
 .lightboxOverlay,
 .lightbox {
   z-index: 9999 !important;
   opacity: 1 !important;
-  display: block !important;
+  /* display: block !important; */ /* REMOVE THIS to prevent auto-launch */
 }
 
 .lb-nav a.lb-prev,
@@ -161,12 +156,12 @@ a {
 
 .lb-close {
   display: block !important;
-  z-index: 10000 !important;
-  color: white !important;
   font-size: 40px !important;
   position: absolute !important;
   top: 10px;
   right: 20px;
   text-decoration: none;
+  color: white !important;
+  z-index: 10000 !important;
   opacity: 1 !important;
 }
