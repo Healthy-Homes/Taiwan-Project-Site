@@ -165,3 +165,28 @@ a {
   text-decoration: none;
   z-index: 10000;
 }
+/* Lightbox Fix: Ensure overlay and close button are clickable */
+body.lb-open {
+  overflow: hidden; /* Prevent scroll bleed-through */
+}
+
+.lb-overlay,
+.lb-dataContainer,
+.lb-nav,
+.lb-close {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+.lb-close {
+  position: absolute !important;
+  top: 10px;
+  right: 20px;
+  font-size: 36px;
+  opacity: 1 !important;
+  color: #fff !important;
+  text-shadow: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
