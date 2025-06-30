@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Overview – Healthy Homes Taiwan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>📚 Research Overview / 研究簡介</h1>
+
+    <p>This Fulbright-supported public health research examines how housing and environmental factors affect health—particularly for low-income and disadvantaged populations in Taiwan—and how lessons might inform healthier housing practices globally.</p>
+
+    <p>本研究由富布賴特資助，聚焦於住宅與環境因素如何影響健康，特別是對低收入與弱勢群體的影響，並希望藉此提供台灣與全球健康住宅實踐的相互借鏡。</p>
+
+    <h2>🔍 Guiding Questions / 研究核心問題</h2>
+
+    <ol>
+      <li>
+        <strong>How is “healthy housing” defined, operationalized, and supported across sectors in Taipei/Taiwan, and what lessons can be drawn for implementation in U.S. cities?</strong><br>
+        在台北／台灣，「健康住宅」是如何被定義、具體實踐，並在不同部門中被推動的？從中可獲得哪些可供美國城市借鑑的經驗？
+      </li>
+      <br>
+      <li>
+        <strong>How does cultural context influence perceptions of health risks in the home environment, and how can these insights inform risk communication and intervention design?</strong><br>
+        台灣的文化脈絡如何影響人們對居家健康風險的理解？這些洞察可如何應用於風險溝通與介入措施的設計？
+      </li>
+    </ol>
+
+    <p>Want to learn more or participate? Visit the <a href="index.html">main research page</a>.</p>
+  </main>
+</body>
+</html>
