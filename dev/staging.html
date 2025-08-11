@@ -13,11 +13,23 @@
     
     <!-- Custom overrides -->
     <style>
-        /* Timeline iframe styling (preserved from original) */
+        /* Override Water.css max-width for full width */
+        body {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        main {
+            max-width: 100%;
+        }
+        
+        /* Timeline iframe styling */
         iframe.timeline {
             width: 100%;
-            height: 100vh;
+            height: 650px;
             border: none;
+            margin: 2rem 0;
         }
         
         /* Placeholder styling */
@@ -33,18 +45,30 @@
         .viz-placeholder {
             height: 500px;
             background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         section {
             min-height: 100vh;
             padding: 2rem;
             border-bottom: 1px solid #eee;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Special full-width section for three lenses */
+        section#three-lenses {
+            max-width: 100%;
+            padding: 2rem 1rem;
         }
         
         .todo {
             background: #fffacd;
             padding: 0.5rem;
             border-left: 4px solid orange;
+            font-size: 0.9em;
         }
         
         .completed {
@@ -52,19 +76,117 @@
             border: none;
         }
         
-        /* Three lens columns for desktop */
-        @media (min-width: 768px) {
-            .lens-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 2rem;
-            }
+        /* Three lens layout - NOT a grid, but sequential sections */
+        .lens-moment {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: #fafafa;
+            border-radius: 8px;
         }
         
+        .lens-moment h3 {
+            font-size: 1.8em;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #333;
+        }
+        
+        /* Practitioner section styling */
+        .lens-moment.practitioner {
+            background: #f0f8f0;
+            border-left: 5px solid #2ECC71;
+        }
+        
+        /* Academic section styling with full width for timeline */
+        .lens-moment.academic {
+            background: #f0f4f8;
+            border-left: 5px solid #3498DB;
+        }
+        
+        .timeline-container {
+            margin: 2rem -2rem;  /* Negative margin to break out of padding */
+            padding: 0 2rem;
+        }
+        
+        /* Ambassador section styling */
+        .lens-moment.ambassador {
+            background: #fff8f0;
+            border-left: 5px solid #F39C12;
+        }
+        
+        /* Resource grid */
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .resource {
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        /* Navigation styling */
+        header {
+            background: #333;
+            padding: 1rem 2rem;
+        }
+        
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        header a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        footer a {
+            color: #4A90E2;
+        }
+        
+        /* Progress tracker */
+        .progress-tracker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        
+        .progress-tracker h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9em;
+        }
+        
+        .progress-tracker ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.85em;
+        }
+        
+        /* Hide progress tracker on mobile */
+        @media (max-width: 768px) {
+            .progress-tracker {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -87,19 +209,17 @@
         
         <div class="field-note placeholder">
             <p class="todo">TODO: Add first impressions field note</p>
-            <p>Date: September 2024</p>
-            <p>Length: 200-300 words</p>
-            <p>Focus: Initial observations, expectations vs. reality</p>
+            <p>Date: September 2024 | Length: 200-300 words</p>
         </div>
         
         <div class="viz-placeholder">
-            <p class="todo">TODO: Embed Three Hats Radar Viz</p>
-            <p>Save as: visualizations/radar.html</p>
+            <p class="todo">TODO: Embed Three Hats Radar Viz<br>
+            Save as: visualizations/radar.html</p>
         </div>
         
         <blockquote class="placeholder">
-            <p class="todo">TODO: Add opening reflection quote</p>
-            <p>"I arrived in Taiwan wearing three hats..."</p>
+            <p class="todo">TODO: Add opening reflection quote<br>
+            "I arrived in Taiwan wearing three hats..."</p>
         </blockquote>
     </section>
 
@@ -108,57 +228,61 @@
         <h2>Discovering Complexity</h2>
         
         <div class="reflection placeholder">
-            <p class="todo">TODO: Add autoethnographic reflection</p>
-            <p>Topic: Realizing housing complexity</p>
-            <p>Length: 2-3 paragraphs</p>
+            <p class="todo">TODO: Add autoethnographic reflection<br>
+            Topic: Realizing housing complexity | Length: 2-3 paragraphs</p>
         </div>
         
         <div class="viz-placeholder">
-            <p class="todo">TODO: Embed 10 Rings Visualization</p>
-            <p>Save as: visualizations/rings.html</p>
+            <p class="todo">TODO: Embed 10 Rings Visualization<br>
+            Save as: visualizations/rings.html</p>
         </div>
         
         <aside class="field-notes placeholder">
             <p class="todo">TODO: Add field note excerpts for each ring</p>
-            <ul>
-                <li>Ring 1 (Individual): [Note about elderly resident]</li>
-                <li>Ring 2 (Home): [Note about mold/ventilation]</li>
-                <li>Ring 5 (Neighborhood): [Note about location]</li>
-            </ul>
         </aside>
     </section>
 
-    <!-- SECTION 3: THREE LENS MOMENTS -->
+    <!-- SECTION 3: THREE LENS MOMENTS - FULL WIDTH, SEQUENTIAL -->
     <section id="three-lenses" data-status="pending">
-        <h2>Three Moments, Three Perspectives</h2>
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <h2>Three Moments, Three Perspectives</h2>
+            <p>Throughout my fellowship, different aspects of my identity came to the forefront at key moments...</p>
+        </div>
         
-        <div class="lens-grid">
-            <!-- Practitioner Lens -->
-            <article class="lens-moment practitioner">
+        <!-- Practitioner Lens -->
+        <article class="lens-moment practitioner">
+            <div style="max-width: 1200px; margin: 0 auto;">
                 <h3>📋 The Practitioner Moment</h3>
                 <p class="placeholder">
-                    <span class="todo">TODO: Add inspection story</span><br>
-                    Location: Public housing unit, Taipei
+                    <span class="todo">TODO: Add inspection story<br>
+                    Location: Public housing unit, Taipei<br>
+                    Focus: Using the checklist, identifying immediate hazards</span>
                 </p>
                 
                 <div class="viz-placeholder">
-                    <p class="todo">TODO: Embed 2x2 Matrix</p>
-                    <p>Save as: visualizations/matrix.html</p>
+                    <p class="todo">TODO: Embed 2x2 Matrix<br>
+                    Save as: visualizations/matrix.html</p>
                 </div>
                 
-                <a href="#" class="placeholder">
-                    🔗 TODO: Link to ShelterHealth App
-                </a>
-            </article>
-            
-            <!-- Academic Lens -->
-            <article class="lens-moment academic completed">
+                <p style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="placeholder">
+                        🔗 TODO: Link to ShelterHealth App
+                    </a>
+                </p>
+            </div>
+        </article>
+        
+        <!-- Academic Lens - WITH WORKING TIMELINE -->
+        <article class="lens-moment academic">
+            <div style="max-width: 1200px; margin: 0 auto;">
                 <h3>📚 The Academic Moment</h3>
                 <p class="placeholder">
-                    <span class="todo">TODO: Add NTU presentation story</span>
+                    <span class="todo">TODO: Add NTU presentation story<br>
+                    Context: Seminar presentation or advisor meeting<br>
+                    Focus: Theoretical frameworks and literature connections</span>
                 </p>
                 
-                <!-- YOUR EXISTING TIMELINE - PRESERVED AND WORKING -->
+                <!-- YOUR EXISTING TIMELINE - FULL WIDTH -->
                 <div class="timeline-container">
                     <h4>Historical Context: Taiwan-U.S. Housing Policy Evolution</h4>
                     <iframe
@@ -169,26 +293,36 @@
                 </div>
                 
                 <div class="paper-excerpt placeholder">
-                    <p class="todo">TODO: Add paper excerpt</p>
+                    <p class="todo">TODO: Add 1-2 paragraph excerpt from your paper</p>
                 </div>
                 
-                <a href="#" class="placeholder">
-                    📄 TODO: Upload paper.pdf to assets/documents/
-                </a>
-            </article>
-            
-            <!-- Ambassador Lens -->
-            <article class="lens-moment ambassador">
+                <p style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="placeholder">
+                        📄 TODO: Link to full academic paper (PDF)
+                    </a>
+                </p>
+            </div>
+        </article>
+        
+        <!-- Ambassador Lens -->
+        <article class="lens-moment ambassador">
+            <div style="max-width: 1200px; margin: 0 auto;">
                 <h3>🌏 The Ambassador Moment</h3>
                 <p class="placeholder">
-                    <span class="todo">TODO: Add cultural bridging story</span>
+                    <span class="todo">TODO: Add cultural bridging story<br>
+                    Context: Ministry meeting or community presentation<br>
+                    Focus: Building understanding between systems</span>
                 </p>
                 
-                <div class="placeholder">
-                    <p class="todo">TODO: Add meeting photos</p>
+                <div class="placeholder" style="min-height: 300px;">
+                    <p class="todo">TODO: Add 2-3 photos from meetings/exchanges</p>
                 </div>
-            </article>
-        </div>
+                
+                <blockquote class="placeholder">
+                    <p class="todo">TODO: Add reflection on translation/bridging challenges</p>
+                </blockquote>
+            </div>
+        </article>
     </section>
 
     <!-- SECTION 4: INTEGRATION -->
@@ -196,12 +330,16 @@
         <h2>Where Three Become One</h2>
         
         <div class="viz-placeholder">
-            <p class="todo">TODO: Embed animated radar evolution</p>
+            <p class="todo">TODO: Embed animated radar showing evolution through time</p>
         </div>
         
         <div class="synthesis placeholder">
-            <p class="todo">TODO: Add integration insight</p>
-            <p>How the three roles reinforced each other</p>
+            <p class="todo">TODO: Add key integration insight from autoethnography<br>
+            How the three roles reinforced rather than conflicted</p>
+        </div>
+        
+        <div class="viz-placeholder">
+            <p class="todo">TODO: Re-embed 10 rings with perspective toggles</p>
         </div>
     </section>
 
@@ -210,25 +348,39 @@
         <h2>Taking It Forward</h2>
         
         <div class="resource-grid">
-            <div class="resource placeholder">
-                <p class="todo">📱 ShelterHealth App</p>
+            <div class="resource">
+                <h3>📱</h3>
+                <p class="placeholder todo">ShelterHealth App</p>
             </div>
             
-            <div class="resource placeholder">
-                <p class="todo">📄 Academic Paper</p>
+            <div class="resource">
+                <h3>📄</h3>
+                <p class="placeholder todo">Academic Paper</p>
             </div>
             
-            <div class="resource placeholder">
-                <p class="todo">📊 Dataset</p>
+            <div class="resource">
+                <h3>📊</h3>
+                <p class="placeholder todo">Dataset</p>
             </div>
             
-            <div class="resource placeholder">
-                <p class="todo">🖼️ Photo Gallery</p>
+            <div class="resource">
+                <h3>🖼️</h3>
+                <p class="placeholder todo">Photo Gallery</p>
+            </div>
+            
+            <div class="resource">
+                <h3>🎧</h3>
+                <p class="placeholder todo">Audio Reflections</p>
+            </div>
+            
+            <div class="resource">
+                <h3>📝</h3>
+                <p class="placeholder todo">Field Notes</p>
             </div>
         </div>
         
         <div class="final-reflection placeholder">
-            <p class="todo">TODO: Add closing reflection</p>
+            <p class="todo">TODO: Add powerful closing paragraph from autoethnography</p>
         </div>
     </section>
 
@@ -240,9 +392,9 @@
     </footer>
 
     <!-- Progress Tracker -->
-    <div style="position: fixed; bottom: 20px; right: 20px; background: white; padding: 1rem; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <div class="progress-tracker">
         <h4>Content Status</h4>
-        <ul style="list-style: none; padding: 0;">
+        <ul>
             <li>⬜ Arrival</li>
             <li>⬜ Complexity</li>
             <li>🟨 Three Lenses (Timeline ✓)</li>
