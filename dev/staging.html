@@ -32,6 +32,16 @@
             margin: 2rem 0;
         }
         
+        /* Visualization iframe styling */
+        iframe.visualization {
+            width: 100%;
+            height: 600px;
+            border: none;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
         /* Placeholder styling */
         .placeholder {
             background: #f0f0f0;
@@ -48,6 +58,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        /* Completed visualization containers */
+        .viz-container {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .viz-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #333;
         }
         
         section {
@@ -187,6 +214,10 @@
             .progress-tracker {
                 display: none;
             }
+            
+            iframe.visualization {
+                height: 500px;
+            }
         }
     </style>
 </head>
@@ -199,7 +230,7 @@
     </header>
 
     <!-- SECTION 1: ARRIVAL -->
-    <section id="arrival" data-status="pending">
+    <section id="arrival" data-status="partial">
         <h1>Through Three Lenses: A Fulbright Journey</h1>
         
         <div class="placeholder">
@@ -212,9 +243,15 @@
             <p>Date: September 2024 | Length: 200-300 words</p>
         </div>
         
-        <div class="viz-placeholder">
-            <p class="todo">TODO: Embed Three Hats Radar Viz<br>
-            Save as: visualizations/radar.html</p>
+        <!-- THREE HATS RADAR VISUALIZATION - COMPLETED -->
+        <div class="viz-container completed">
+            <div class="viz-title">Three Hats Radar: Practitioner, Academic, Ambassador</div>
+            <iframe 
+                class="visualization"
+                src="https://dazzling-arithmetic-d6c0f1.netlify.app/"
+                title="Three Hats Radar Visualization"
+                allowfullscreen>
+            </iframe>
         </div>
         
         <blockquote class="placeholder">
@@ -224,7 +261,7 @@
     </section>
 
     <!-- SECTION 2: DISCOVERING COMPLEXITY -->
-    <section id="complexity" data-status="pending">
+    <section id="complexity" data-status="partial">
         <h2>Discovering Complexity</h2>
         
         <div class="reflection placeholder">
@@ -232,9 +269,15 @@
             Topic: Realizing housing complexity | Length: 2-3 paragraphs</p>
         </div>
         
-        <div class="viz-placeholder">
-            <p class="todo">TODO: Embed 10 Rings Visualization<br>
-            Save as: visualizations/rings.html</p>
+        <!-- TEN RINGS VISUALIZATION - COMPLETED -->
+        <div class="viz-container completed">
+            <div class="viz-title">Ten Rings of Housing Complexity in Taiwan</div>
+            <iframe 
+                class="visualization"
+                src="https://ubiquitous-daffodil-1fba1a.netlify.app/"
+                title="Ten Rings Visualization"
+                allowfullscreen>
+            </iframe>
         </div>
         
         <aside class="field-notes placeholder">
@@ -243,7 +286,7 @@
     </section>
 
     <!-- SECTION 3: THREE LENS MOMENTS - FULL WIDTH, SEQUENTIAL -->
-    <section id="three-lenses" data-status="pending">
+    <section id="three-lenses" data-status="partial">
         <div style="max-width: 1400px; margin: 0 auto;">
             <h2>Three Moments, Three Perspectives</h2>
             <p>Throughout my fellowship, different aspects of my identity came to the forefront at key moments...</p>
@@ -259,9 +302,15 @@
                     Focus: Using the checklist, identifying immediate hazards</span>
                 </p>
                 
-                <div class="viz-placeholder">
-                    <p class="todo">TODO: Embed 2x2 Matrix<br>
-                    Save as: visualizations/matrix.html</p>
+                <!-- CULTURAL VARIABILITY MATRIX - COMPLETED -->
+                <div class="viz-container completed">
+                    <div class="viz-title">Cultural Variability in Housing Assessment</div>
+                    <iframe 
+                        class="visualization"
+                        src="https://vermillion-pegasus-d2af27.netlify.app/"
+                        title="Cultural Variability Matrix"
+                        allowfullscreen>
+                    </iframe>
                 </div>
                 
                 <p style="text-align: center; margin-top: 2rem;">
@@ -287,9 +336,10 @@
                     <h4>Historical Context: Taiwan-U.S. Housing Policy Evolution</h4>
                     <iframe
                         class="timeline"
-                        src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=v2%3A2PACX-1vR5Ic77yCEdBr2VeSbKTIryPtS-dHTiCUdfdTCMO_KnooGwE-Yh-4mHNgzVXVZth1cREX0Lbz4Sxpqu&font=Default&lang=en&initial_zoom=2&width=100%25&height=650"
+                        src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=2PACX-1vR5Ic77yCEdBr2VeSbKTIryPtS-dHTiCUdfdTCMO_KnooGwE-Yh-4mHNgzVXVZth1cREX0Lbz4Sxpqu&font=Default&lang=en&initial_zoom=2&width=100%25&height=650"
                         allowfullscreen
-                    ></iframe>
+                        title="Taiwan-U.S. Housing Policy Timeline">
+                    </iframe>
                 </div>
                 
                 <div class="paper-excerpt placeholder">
@@ -391,13 +441,13 @@
         </nav>
     </footer>
 
-    <!-- Progress Tracker -->
+    <!-- Progress Tracker - UPDATED -->
     <div class="progress-tracker">
         <h4>Content Status</h4>
         <ul>
-            <li>⬜ Arrival</li>
-            <li>⬜ Complexity</li>
-            <li>🟨 Three Lenses (Timeline ✓)</li>
+            <li>🟨 Arrival (Radar ✓)</li>
+            <li>🟨 Complexity (Rings ✓)</li>
+            <li>🟨 Three Lenses (Timeline ✓, Matrix ✓)</li>
             <li>⬜ Integration</li>
             <li>⬜ Resources</li>
         </ul>
