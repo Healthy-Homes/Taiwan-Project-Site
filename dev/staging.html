@@ -11,45 +11,128 @@
     <!-- Add Water.css for instant beauty -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
     
-    <!-- Custom overrides -->
     <style>
-        /* Override Water.css max-width for full width */
+        /* Reset and base styles */
         body {
             max-width: 100%;
             padding: 0;
             margin: 0;
+            scroll-behavior: smooth;
         }
         
         main {
             max-width: 100%;
         }
         
-        /* Timeline iframe styling */
+        /* Perspective Selector - New Feature */
+        .perspective-selector {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #e0e0e0;
+            padding: 1rem 2rem;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .perspective-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .perspective-tab {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .perspective-tab:hover {
+            border-color: #666;
+            background: #f8f8f8;
+        }
+        
+        .perspective-tab.active {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+        
+        .perspective-tab.practitioner.active {
+            background: #2ECC71;
+            border-color: #2ECC71;
+        }
+        
+        .perspective-tab.academic.active {
+            background: #3498DB;
+            border-color: #3498DB;
+        }
+        
+        .perspective-tab.ambassador.active {
+            background: #F39C12;
+            border-color: #F39C12;
+        }
+        
+        /* Dynamic content visibility */
+        .perspective-content {
+            display: none;
+        }
+        
+        .perspective-content.active {
+            display: block;
+        }
+        
+        /* Enhanced visualization sizing - FIXED */
         iframe.timeline {
             width: 100%;
-            height: 650px;
+            height: 700px;
             border: none;
             margin: 2rem 0;
         }
         
-        /* Visualization iframe styling */
         iframe.visualization {
             width: 100%;
-            height: 800px; /* Increased from 600px */
+            height: 900px; /* Increased significantly for 10 rings */
             border: none;
             margin: 2rem 0;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        /* Placeholder styling */
+        /* Special sizing for specific visualizations */
+        iframe.ten-rings {
+            height: 1000px; /* Even taller for the complex 10 rings viz */
+        }
+        
+        iframe.cultural-matrix {
+            height: 800px; /* Appropriate for matrix */
+        }
+        
+        /* Enhanced placeholder styling */
         .placeholder {
-            background: #f0f0f0;
-            border: 2px dashed #999;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #adb5bd;
+            border-radius: 8px;
             padding: 2rem;
             margin: 1rem 0;
             text-align: center;
-            color: #666;
+            color: #6c757d;
+            position: relative;
+        }
+        
+        .placeholder::before {
+            content: "📝";
+            font-size: 2em;
+            display: block;
+            margin-bottom: 1rem;
         }
         
         .viz-placeholder {
@@ -58,192 +141,407 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
         
-        /* Completed visualization containers */
+        .viz-placeholder::before {
+            content: "📊";
+            font-size: 3em;
+            margin-bottom: 1rem;
+        }
+        
+        /* Enhanced completed visualization containers */
         .viz-container {
-            margin: 2rem 0;
-            padding: 1rem;
+            margin: 3rem 0;
+            padding: 1.5rem;
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
         }
         
         .viz-title {
-            font-size: 1.1em;
-            font-weight: bold;
+            font-size: 1.2em;
+            font-weight: 600;
             margin-bottom: 1rem;
             text-align: center;
-            color: #333;
+            color: #2c3e50;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ecf0f1;
         }
         
+        /* Section improvements */
         section {
             min-height: 100vh;
-            padding: 2rem;
+            padding: 4rem 2rem;
             border-bottom: 1px solid #eee;
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+        }
+        
+        section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498DB, #2ECC71, #F39C12);
+            border-radius: 2px;
         }
         
         /* Special full-width section for three lenses */
         section#three-lenses {
             max-width: 100%;
-            padding: 2rem 1rem;
+            padding: 4rem 1rem;
         }
         
         .todo {
-            background: #fffacd;
-            padding: 0.5rem;
-            border-left: 4px solid orange;
-            font-size: 0.9em;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            padding: 1rem;
+            border-left: 4px solid #f39c12;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+            margin: 1rem 0;
         }
         
         .completed {
-            background: #e8f5e9;
-            border: none;
+            background: linear-gradient(135deg, #d4edda, #00b894);
+            border-left: 4px solid #00b894;
+            color: white;
         }
         
-        /* Three lens layout - NOT a grid, but sequential sections */
+        /* Enhanced three lens layout */
         .lens-moment {
-            margin: 4rem 0;
-            padding: 2rem;
-            background: #fafafa;
-            border-radius: 8px;
+            margin: 6rem 0;
+            padding: 3rem;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lens-moment::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            z-index: 1;
         }
         
         .lens-moment h3 {
-            font-size: 1.8em;
-            margin-bottom: 1rem;
+            font-size: 2.2em;
+            margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 3px solid #333;
+            position: relative;
+            z-index: 2;
         }
         
-        /* Practitioner section styling */
+        /* Enhanced practitioner section */
         .lens-moment.practitioner {
-            background: #f0f8f0;
-            border-left: 5px solid #2ECC71;
+            background: linear-gradient(135deg, #f0f8f0, #e8f5e9);
+            border: 1px solid #c8e6c9;
         }
         
-        /* Academic section styling with full width for timeline */
+        .lens-moment.practitioner::before {
+            background: linear-gradient(90deg, #2ECC71, #27AE60);
+        }
+        
+        .lens-moment.practitioner h3 {
+            color: #1e8449;
+            border-bottom: 3px solid #2ECC71;
+        }
+        
+        /* Enhanced academic section */
         .lens-moment.academic {
-            background: #f0f4f8;
-            border-left: 5px solid #3498DB;
+            background: linear-gradient(135deg, #f0f4f8, #e3f2fd);
+            border: 1px solid #bbdefb;
+        }
+        
+        .lens-moment.academic::before {
+            background: linear-gradient(90deg, #3498DB, #2980B9);
+        }
+        
+        .lens-moment.academic h3 {
+            color: #1565c0;
+            border-bottom: 3px solid #3498DB;
         }
         
         .timeline-container {
-            margin: 2rem -2rem;  /* Negative margin to break out of padding */
-            padding: 0 2rem;
+            margin: 3rem -3rem;
+            padding: 0 3rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
         }
         
-        /* Ambassador section styling */
+        /* Enhanced ambassador section */
         .lens-moment.ambassador {
-            background: #fff8f0;
-            border-left: 5px solid #F39C12;
+            background: linear-gradient(135deg, #fff8f0, #fff3e0);
+            border: 1px solid #ffcc80;
         }
         
-        /* Resource grid */
+        .lens-moment.ambassador::before {
+            background: linear-gradient(90deg, #F39C12, #E67E22);
+        }
+        
+        .lens-moment.ambassador h3 {
+            color: #ef6c00;
+            border-bottom: 3px solid #F39C12;
+        }
+        
+        /* Enhanced resource grid */
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
         }
         
         .resource {
-            padding: 1.5rem;
-            background: #f9f9f9;
-            border-radius: 8px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 16px;
             text-align: center;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
         
-        /* Navigation styling */
+        .resource:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #3498DB;
+        }
+        
+        .resource h3 {
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+        }
+        
+        /* Enhanced navigation */
         header {
-            background: #333;
-            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         header a {
             color: white;
             text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
         
         header a:hover {
-            text-decoration: underline;
+            color: #3498DB;
         }
         
-        /* Footer */
+        /* Enhanced footer */
         footer {
-            background: #333;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
-            margin-top: 4rem;
+            margin-top: 6rem;
         }
         
         footer a {
-            color: #4A90E2;
+            color: #3498DB;
+            transition: color 0.3s ease;
         }
         
-        /* Progress tracker */
+        footer a:hover {
+            color: #5dade2;
+        }
+        
+        /* Enhanced progress tracker */
         .progress-tracker {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             background: white;
-            padding: 1rem;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            border-radius: 8px;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid #e9ecef;
             z-index: 1000;
+            min-width: 200px;
         }
         
         .progress-tracker h4 {
-            margin: 0 0 0.5rem 0;
-            font-size: 0.9em;
+            margin: 0 0 1rem 0;
+            font-size: 1em;
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5rem;
         }
         
         .progress-tracker ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            font-size: 0.85em;
+            font-size: 0.9em;
         }
         
-        /* Hide progress tracker on mobile */
+        .progress-tracker li {
+            padding: 0.25rem 0;
+        }
+        
+        /* Responsive design improvements */
         @media (max-width: 768px) {
+            .perspective-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .perspective-tab {
+                width: 200px;
+                text-align: center;
+            }
+            
             .progress-tracker {
                 display: none;
             }
             
-            iframe.visualization {
-                height: 600px; /* Smaller on mobile */
+            iframe.visualization,
+            iframe.ten-rings {
+                height: 700px;
             }
+            
+            iframe.cultural-matrix {
+                height: 600px;
+            }
+            
+            section {
+                padding: 2rem 1rem;
+            }
+            
+            .lens-moment {
+                padding: 2rem;
+                margin: 3rem 0;
+            }
+            
+            .timeline-container {
+                margin: 2rem -2rem;
+                padding: 0 2rem;
+            }
+        }
+        
+        /* Scroll animations */
+        .scroll-fade {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Content type indicators */
+        .content-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .content-type.field-note {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .content-type.reflection {
+            background: #e2e3ff;
+            color: #383d75;
+        }
+        
+        .content-type.story {
+            background: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
-    <!-- Keep navigation to main site -->
+    <!-- Enhanced navigation -->
     <header>
         <nav>
             <a href="../index.html">← Back to Main Site</a>
         </nav>
     </header>
 
+    <!-- NEW: Perspective Selector -->
+    <div class="perspective-selector">
+        <div class="perspective-tabs">
+            <button class="perspective-tab story active" data-perspective="story">
+                📖 Story Mode
+            </button>
+            <button class="perspective-tab practitioner" data-perspective="practitioner">
+                🔧 Practitioner
+            </button>
+            <button class="perspective-tab academic" data-perspective="academic">
+                📚 Academic
+            </button>
+            <button class="perspective-tab ambassador" data-perspective="ambassador">
+                🌍 Ambassador
+            </button>
+        </div>
+    </div>
+
     <!-- SECTION 1: ARRIVAL -->
     <section id="arrival" data-status="partial">
         <h1>Through Three Lenses: A Fulbright Journey</h1>
         
-        <div class="placeholder">
-            <p class="todo">TODO: Add hero image - Taiwan street/housing photo</p>
-            <p>Suggested: Upload to assets/photos/arrival-taipei.jpg</p>
+        <!-- Story Mode Content -->
+        <div class="perspective-content story active">
+            <div class="placeholder">
+                <span class="content-type story">Personal Story</span>
+                <p class="todo">TODO: Add hero image - Taiwan street/housing photo</p>
+                <p>Suggested: Upload to assets/photos/arrival-taipei.jpg</p>
+            </div>
+            
+            <div class="field-note placeholder">
+                <span class="content-type field-note">Field Notes</span>
+                <p class="todo">TODO: Add first impressions field note</p>
+                <p>Date: September 2024 | Length: 200-300 words</p>
+            </div>
         </div>
         
-        <div class="field-note placeholder">
-            <p class="todo">TODO: Add first impressions field note</p>
-            <p>Date: September 2024 | Length: 200-300 words</p>
+        <!-- Practitioner Mode Content -->
+        <div class="perspective-content practitioner">
+            <div class="placeholder">
+                <span class="content-type field-note">Assessment Context</span>
+                <p class="todo">TODO: Add arrival from inspector/assessor perspective</p>
+                <p>Focus: First observations of housing conditions and safety standards</p>
+            </div>
         </div>
         
-        <!-- THREE HATS RADAR VISUALIZATION - COMPLETED -->
+        <!-- Academic Mode Content -->
+        <div class="perspective-content academic">
+            <div class="placeholder">
+                <span class="content-type reflection">Research Framework</span>
+                <p class="todo">TODO: Add methodological positioning</p>
+                <p>Context: Research questions, theoretical framework, positionality</p>
+            </div>
+        </div>
+        
+        <!-- Ambassador Mode Content -->
+        <div class="perspective-content ambassador">
+            <div class="placeholder">
+                <span class="content-type story">Cultural Context</span>
+                <p class="todo">TODO: Add cultural immersion perspective</p>
+                <p>Focus: Cross-cultural adaptation, program expectations</p>
+            </div>
+        </div>
+        
+        <!-- SHARED: THREE HATS RADAR VISUALIZATION -->
         <div class="viz-container completed">
             <div class="viz-title">Three Hats Radar: Practitioner, Academic, Ambassador</div>
             <iframe 
@@ -253,27 +551,50 @@
                 allowfullscreen>
             </iframe>
         </div>
-        
-        <blockquote class="placeholder">
-            <p class="todo">TODO: Add opening reflection quote<br>
-            "I arrived in Taiwan wearing three hats..."</p>
-        </blockquote>
     </section>
 
     <!-- SECTION 2: DISCOVERING COMPLEXITY -->
     <section id="complexity" data-status="partial">
         <h2>Discovering Complexity</h2>
         
-        <div class="reflection placeholder">
-            <p class="todo">TODO: Add autoethnographic reflection<br>
-            Topic: Realizing housing complexity | Length: 2-3 paragraphs</p>
+        <!-- Perspective-specific content -->
+        <div class="perspective-content story active">
+            <div class="reflection placeholder">
+                <span class="content-type reflection">Personal Reflection</span>
+                <p class="todo">TODO: Add autoethnographic reflection<br>
+                Topic: Realizing housing complexity | Length: 2-3 paragraphs</p>
+            </div>
         </div>
         
-        <!-- TEN RINGS VISUALIZATION - COMPLETED -->
+        <div class="perspective-content academic">
+            <div class="placeholder">
+                <span class="content-type reflection">Theoretical Development</span>
+                <p class="todo">TODO: Add framework emergence story</p>
+                <p>How the 10 rings concept developed from literature + field observations</p>
+            </div>
+        </div>
+        
+        <div class="perspective-content practitioner">
+            <div class="placeholder">
+                <span class="content-type field-note">Assessment Evolution</span>
+                <p class="todo">TODO: Add practitioner realization</p>
+                <p>When simple checklists proved inadequate</p>
+            </div>
+        </div>
+        
+        <div class="perspective-content ambassador">
+            <div class="placeholder">
+                <span class="content-type story">Cultural Learning</span>
+                <p class="todo">TODO: Add cultural complexity discovery</p>
+                <p>Understanding Taiwan's unique housing ecosystem</p>
+            </div>
+        </div>
+        
+        <!-- SHARED: TEN RINGS VISUALIZATION - ENHANCED -->
         <div class="viz-container completed">
             <div class="viz-title">Ten Rings of Housing Complexity in Taiwan</div>
             <iframe 
-                class="visualization"
+                class="visualization ten-rings"
                 src="https://ubiquitous-daffodil-1fba1a.netlify.app/"
                 title="Ten Rings Visualization"
                 allowfullscreen>
@@ -281,11 +602,12 @@
         </div>
         
         <aside class="field-notes placeholder">
+            <span class="content-type field-note">Supporting Evidence</span>
             <p class="todo">TODO: Add field note excerpts for each ring</p>
         </aside>
     </section>
 
-    <!-- SECTION 3: THREE LENS MOMENTS - FULL WIDTH, SEQUENTIAL -->
+    <!-- SECTION 3: THREE LENS MOMENTS -->
     <section id="three-lenses" data-status="partial">
         <div style="max-width: 1400px; margin: 0 auto;">
             <h2>Three Moments, Three Perspectives</h2>
@@ -297,16 +619,17 @@
             <div style="max-width: 1200px; margin: 0 auto;">
                 <h3>📋 The Practitioner Moment</h3>
                 <p class="placeholder">
+                    <span class="content-type story">Site Visit Story</span>
                     <span class="todo">TODO: Add inspection story<br>
                     Location: Public housing unit, Taipei<br>
                     Focus: Using the checklist, identifying immediate hazards</span>
                 </p>
                 
-                <!-- CULTURAL VARIABILITY MATRIX - COMPLETED -->
+                <!-- CULTURAL VARIABILITY MATRIX - ENHANCED -->
                 <div class="viz-container completed">
                     <div class="viz-title">Cultural Variability in Housing Assessment</div>
                     <iframe 
-                        class="visualization"
+                        class="visualization cultural-matrix"
                         src="https://vermillion-pegasus-d2af27.netlify.app/"
                         title="Cultural Variability Matrix"
                         allowfullscreen>
@@ -326,23 +649,25 @@
             <div style="max-width: 1200px; margin: 0 auto;">
                 <h3>📚 The Academic Moment</h3>
                 <p class="placeholder">
+                    <span class="content-type story">Presentation Story</span>
                     <span class="todo">TODO: Add NTU presentation story<br>
                     Context: Seminar presentation or advisor meeting<br>
                     Focus: Theoretical frameworks and literature connections</span>
                 </p>
                 
-                <!-- YOUR EXISTING TIMELINE - FULL WIDTH -->
+                <!-- TIMELINE - ENHANCED -->
                 <div class="timeline-container">
                     <h4>Historical Context: Taiwan-U.S. Housing Policy Evolution</h4>
                     <iframe
                         class="timeline"
-                        src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=v2%3A2PACX-1vR5Ic77yCEdBr2VeSbKTIryPtS-dHTiCUdfdTCMO_KnooGwE-Yh-4mHNgzVXVZth1cREX0Lbz4Sxpqu&font=Default&lang=en&initial_zoom=2&width=100%25&height=650"
+                        src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=v2%3A2PACX-1vR5Ic77yCEdBr2VeSbKTIryPtS-dHTiCUdfdTCMO_KnooGwE-Yh-4mHNgzVXVZth1cREX0Lbz4Sxpqu&font=Default&lang=en&initial_zoom=2&width=100%25&height=700"
                         allowfullscreen
                         title="Taiwan-U.S. Housing Policy Timeline">
                     </iframe>
                 </div>
                 
                 <div class="paper-excerpt placeholder">
+                    <span class="content-type reflection">Academic Excerpt</span>
                     <p class="todo">TODO: Add 1-2 paragraph excerpt from your paper</p>
                 </div>
                 
@@ -359,16 +684,19 @@
             <div style="max-width: 1200px; margin: 0 auto;">
                 <h3>🌏 The Ambassador Moment</h3>
                 <p class="placeholder">
+                    <span class="content-type story">Bridging Story</span>
                     <span class="todo">TODO: Add cultural bridging story<br>
                     Context: Ministry meeting or community presentation<br>
                     Focus: Building understanding between systems</span>
                 </p>
                 
                 <div class="placeholder" style="min-height: 300px;">
+                    <span class="content-type story">Photo Documentation</span>
                     <p class="todo">TODO: Add 2-3 photos from meetings/exchanges</p>
                 </div>
                 
                 <blockquote class="placeholder">
+                    <span class="content-type reflection">Cultural Reflection</span>
                     <p class="todo">TODO: Add reflection on translation/bridging challenges</p>
                 </blockquote>
             </div>
@@ -384,6 +712,7 @@
         </div>
         
         <div class="synthesis placeholder">
+            <span class="content-type reflection">Integration Insight</span>
             <p class="todo">TODO: Add key integration insight from autoethnography<br>
             How the three roles reinforced rather than conflicted</p>
         </div>
@@ -400,36 +729,43 @@
         <div class="resource-grid">
             <div class="resource">
                 <h3>📱</h3>
-                <p class="placeholder todo">ShelterHealth App</p>
+                <h4>ShelterHealth App</h4>
+                <p class="placeholder todo">Interactive housing assessment tool</p>
             </div>
             
             <div class="resource">
                 <h3>📄</h3>
-                <p class="placeholder todo">Academic Paper</p>
+                <h4>Academic Paper</h4>
+                <p class="placeholder todo">Full research findings and methodology</p>
             </div>
             
             <div class="resource">
                 <h3>📊</h3>
-                <p class="placeholder todo">Dataset</p>
+                <h4>Dataset</h4>
+                <p class="placeholder todo">Housing assessment data and analysis</p>
             </div>
             
             <div class="resource">
                 <h3>🖼️</h3>
-                <p class="placeholder todo">Photo Gallery</p>
+                <h4>Photo Gallery</h4>
+                <p class="placeholder todo">Visual documentation from fieldwork</p>
             </div>
             
             <div class="resource">
                 <h3>🎧</h3>
-                <p class="placeholder todo">Audio Reflections</p>
+                <h4>Audio Reflections</h4>
+                <p class="placeholder todo">Recorded insights and interviews</p>
             </div>
             
             <div class="resource">
                 <h3>📝</h3>
-                <p class="placeholder todo">Field Notes</p>
+                <h4>Field Notes</h4>
+                <p class="placeholder todo">Detailed observations and analysis</p>
             </div>
         </div>
         
         <div class="final-reflection placeholder">
+            <span class="content-type reflection">Final Reflection</span>
             <p class="todo">TODO: Add powerful closing paragraph from autoethnography</p>
         </div>
     </section>
@@ -441,7 +777,7 @@
         </nav>
     </footer>
 
-    <!-- Progress Tracker - UPDATED -->
+    <!-- Enhanced Progress Tracker -->
     <div class="progress-tracker">
         <h4>Content Status</h4>
         <ul>
@@ -451,6 +787,71 @@
             <li>⬜ Integration</li>
             <li>⬜ Resources</li>
         </ul>
+        <hr style="margin: 1rem 0; border: 1px solid #ecf0f1;">
+        <p style="font-size: 0.8em; color: #6c757d; margin: 0;">
+            <span id="active-perspective">Story Mode</span> Active
+        </p>
     </div>
+
+    <script>
+        // Perspective switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.perspective-tab');
+            const contents = document.querySelectorAll('.perspective-content');
+            const activeIndicator = document.getElementById('active-perspective');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const perspective = this.dataset.perspective;
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update visible content
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.classList.contains(perspective)) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Update indicator
+                    const perspectiveNames = {
+                        'story': 'Story Mode',
+                        'practitioner': 'Practitioner',
+                        'academic': 'Academic',
+                        'ambassador': 'Ambassador'
+                    };
+                    activeIndicator.textContent = perspectiveNames[perspective];
+                    
+                    // Smooth scroll to top of content
+                    document.querySelector('.perspective-selector').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Simple scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe sections for animation
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('scroll-fade');
+                observer.observe(section);
+            });
+        });
+    </script>
 </body>
 </html>
