@@ -15,63 +15,8 @@
       color: #39ff14;
     }
 
-    header {
-      background-color: #111;
-      padding: 10px 20px;
-      border-bottom: 1px solid #39ff14;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-    }
-
-    nav a {
-      color: #39ff14;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a.active {
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-    }
-
-    .hamburger {
-      display: none;
-      cursor: pointer;
-      font-size: 24px;
-    }
-
-    @media (max-width: 600px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .nav-links.open {
-        display: flex;
-        margin-top: 10px;
-      }
-
-      .hamburger {
-        display: block;
-      }
-    }
-
     #map {
-      height: calc(100vh - 60px);
+      height: 100vh;
       width: 100%;
     }
 
@@ -100,9 +45,9 @@
     #reviewList {
       position: fixed;
       right: 0;
-      top: 60px;
+      top: 0;
       width: 300px;
-      height: calc(100vh - 60px);
+      height: 100vh;
       background-color: #111;
       overflow-y: auto;
       border-left: 1px solid #39ff14;
@@ -143,28 +88,11 @@
 </head>
 
 <body>
-  <header>
-    <nav>
-      <div class="hamburger" onclick="toggleMenu()">☰</div>
-      <div class="nav-links" id="navLinks">
-        <a href="index.html">Home</a>
-        <a href="environmental-info.html">Sights & Sounds</a>
-        <a href="dashboard.html" class="active">Meal Reviews Map</a>
-        <a href="connect.html">Connect</a>
-      </div>
-    </nav>
-  </header>
-
   <div id="map"></div>
   <div id="reviewList"></div>
   <a href="#top" id="back-to-top">Back to Top</a>
 
   <script>
-    function toggleMenu() {
-      const navLinks = document.getElementById('navLinks');
-      navLinks.classList.toggle('open');
-    }
-
     window.onscroll = function() {
       document.getElementById("back-to-top").style.display = (document.documentElement.scrollTop > 100) ? "block" : "none";
     };
